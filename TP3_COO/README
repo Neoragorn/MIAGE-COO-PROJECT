@@ -1,0 +1,12 @@
+Casier Sofian
+TP3 COO
+
+Login : casier
+mdp : C&?1+mur
+
+Le main du programme teste différentes possibilités pour ajouter et modifier
+l'insertion de personnes dans des bureaux.
+La bdd est réinitialisée à chaque lancement du programme pour empêcher tout erreur.
+Des commentaires sont mis dans le code du main pour suivre les différentes étapes.
+
+Voir le fichier login_mdp pour se connecter sur la bdd
