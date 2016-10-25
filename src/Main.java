@@ -22,15 +22,9 @@ public class Main {
         PersistenceConnection co = new PersistenceConnection();
 
         try {
-            Class.forName(co.getJDBC_DRIVER());
             co.startConnection("casier", "C&?1+mur");
             User user = new User(1, "Neor", "123456789", "b@g.com");  
-            UserBdd.insertUser(user);
-                        
-            /* test de connection à la bdd réussi
-            String req = "delete from Bureau;";
-            pss = conn.prepareStatement(req);
-            pss.executeUpdate();*/
+            UserBdd.insertUser(user);                        
         } catch (Exception e) {
             System.out.println(e);
         }

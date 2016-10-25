@@ -16,32 +16,26 @@ import java.sql.SQLException;
  */
 public class UserBdd {
 
-    private  Connection conn = PersistenceConnection.getConn();
+    private static Connection conn = PersistenceConnection.getInstance().getConn();
 
     public static void insertUser(User user) throws SQLException {
-        try {
             String req = "INSERT INTO USER VALUES (?, ?, ?, ?)";
-            System.out.println("INSERT ! ");
-            System.out.println("INSERT !1 ");
             PreparedStatement pss = conn.prepareStatement(req);
-            System.out.println("INSERT ! 2");
             pss.setInt(1, user.getIdUser());
-            System.out.println("INSERT ! 3");
             pss.setString(2, user.getPseudo());
             pss.setString(3, user.getPwd());
             pss.setString(4, user.getMail());
-            pss.executeUpdate();
-            System.out.println("INSERT ! DONE");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+            pss.executeUpdate();        
     }
 
-    public static void deleteUser() {
-
+    public static void deleteUser(User user) throws SQLException {
+        String req = "DELETE FROM USER WHERE idUser = ? ";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, user.getIdUser());
+        pss.executeUpdate();
     }
 
-    public static void updateUser() {
-
-    }
+/*    public static void updateUser(User user) {
+        
+    }*/
 }

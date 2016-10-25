@@ -2,7 +2,6 @@ package Persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class PersistenceConnection {
@@ -37,11 +36,11 @@ public class PersistenceConnection {
         return DB_URL;
     }
 
-    public void startConnection(String name, String mdp) throws SQLException
-    {
-        DriverManager.getConnection(this.DB_URL, name, mdp);
+    public void startConnection(String name, String mdp) throws SQLException, Exception {
+        Class.forName(this.JDBC_DRIVER);
+        this.conn = DriverManager.getConnection(this.DB_URL, name, mdp);
     }
-    
+
     public PersistenceConnection() {
 
     }
