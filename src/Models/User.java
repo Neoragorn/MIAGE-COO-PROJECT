@@ -6,6 +6,11 @@ public class User {
     private String pwd;
     private int idUser;
 
+    public User()
+    {
+        
+    }
+    
     public User(int id, String pseudo, String pwd, String mail) {
         this.pseudo = pseudo;
         this.mail = mail;
@@ -45,5 +50,9 @@ public class User {
         this.idUser = idUser;
     }
     
-    
+    @Override
+    public String toString()
+    {
+        return ("id: " + this.idUser + "\nPseudo : " + this.pseudo + "\nmail: " + this.mail);
+    }
 }

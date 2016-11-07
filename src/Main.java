@@ -15,7 +15,7 @@ import Frame.ChampsSaisie;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and open the template in     the editor.
  */
 /**
  *
@@ -29,17 +29,19 @@ public class Main {
 
         try {
             co.startConnection("casier", "C&?1+mur");
-            User user = new User(2, "Neor", "123456789", "b@g.com");  
-            UserBdd.insertUser(user);                        
+//            User user = new User(3, "Neor", "123456789", "b@g.com");  
+            //          UserBdd.insertUser(user);
+            User user = UserBdd.getUser("Neor","123456789");
+            System.out.println(user.toString());
         } catch (Exception e) {
             System.out.println(e);
         }
-        
-		JFrame f = new JFrame("Messenger");
-		f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		f.pack(); 
-		f.setVisible(true);
+
+        JFrame f = new JFrame("Messenger");
+        f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.pack();
+        f.setVisible(true);
 
     }
 }
