@@ -25,21 +25,16 @@ public class Main {
         PersistenceConnection co = new PersistenceConnection();        
         try {
             co.startConnection("casier", "C&?1+mur");
-/*            User user = UserBdd.getUser("Neor", "123456789");
-            if (user != null) {
-                System.out.println(user.toString());
-            }*/
         } catch (Exception e) {
             System.out.println(e);
         }
 
         MyFrame myF = new MyFrame();
-        MyFrame.setInst(myF);                
+        MyFrame.setInst(myF);        
         JPanel jp = new ChoixConnection();
-
+        MyFrame.getInstance().setActualPanel(jp);
         //Ecran pour soit se connecter, soit s'inscrire
-        myF.changeFrame(jp);
-        
+        myF.startPoint(jp);
         //Ecran pour s'inscrire
 //        f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
         

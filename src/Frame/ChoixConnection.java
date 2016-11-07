@@ -52,7 +52,6 @@ public class ChoixConnection extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("inscription")) {
             JPanel f = new ChampsSaisie();
-            MyFrame.getInstance().repaint();
             MyFrame.getInstance().changeFrame(f);
         }
     }

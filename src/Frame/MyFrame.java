@@ -8,11 +8,13 @@ public class MyFrame extends JPanel {
 
     private JFrame frame = new JFrame("Messenger");
 
+    private JPanel actualPanel = null;
+
     public static MyFrame inst;
 
     public MyFrame() {
     }
-    
+
     public static MyFrame getInst() {
         return inst;
     }
@@ -28,10 +30,26 @@ public class MyFrame extends JPanel {
         return inst;
     }
 
-    public void changeFrame(JPanel jp) {
+    public void setActualPanel(JPanel actualPanel) {
+        this.actualPanel = actualPanel;
+    }
+
+    public void startPoint(JPanel jp) {
         frame.getContentPane().add(jp, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        this.actualPanel = jp;
+    }
+
+    public void changeFrame(JPanel jp) {
+        if (actualPanel != null) {
+            actualPanel.removeAll();
+        }
+        frame.getContentPane().add(jp, BorderLayout.SOUTH);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        this.actualPanel = jp;
     }
 }
