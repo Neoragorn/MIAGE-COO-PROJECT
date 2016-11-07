@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 public class ChampsSaisie extends JPanel implements ActionListener {
 
     JButton validation;
+    JButton quitter;
     private ArrayList<String> info = new ArrayList();
     static JTextField TFPseudo;
     static JTextField TFMail;
@@ -29,6 +30,7 @@ public class ChampsSaisie extends JPanel implements ActionListener {
         setLayout(null);
         setPreferredSize(new Dimension(500, 300));
         validation = new JButton("Valider");
+        quitter = new JButton("Quitter");
         TFPseudo = new JTextField("Pseudo");
         TFMail = new JTextField("Mail");
         TFPassword = new JTextField("Password");
@@ -37,8 +39,12 @@ public class ChampsSaisie extends JPanel implements ActionListener {
         p1.setOpaque(false);
 
         p1.add(validation);
-        validation.setBounds(300, 270, 50, 20);
+        validation.setBounds(250, 200, 150, 20);
         validation.addActionListener(this);
+
+        p1.add(quitter);
+        quitter.setBounds(50, 200, 150, 20);
+        quitter.addActionListener(this);
 
         TFPseudo.setBackground(new Color(100, 100, 100));
         TFPseudo.setForeground(new Color(255, 255, 255));
@@ -56,13 +62,19 @@ public class ChampsSaisie extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        Pseudo = TFPseudo.getText();
-        Mail = TFMail.getText();
-        Password = TFPassword.getText();
-        info.add(Pseudo);
-        info.add(Mail);
-        info.add(Password);
-        UserBean.getInstance().addUserBdd(info);
+        if (e.getActionCommand().equals("Valider")) {
+            Pseudo = TFPseudo.getText();
+            Mail = TFMail.getText();
+            Password = TFPassword.getText();
+            info.add(Pseudo);
+            info.add(Mail);
+            info.add(Password);
+            UserBean.getInstance().addUserBdd(info);
+            MyFrame.getInstance().changeFrame(new ChoixConnection());
+        }
+        else if (e.getActionCommand().equals("Quitter")) {
+            MyFrame.getInstance().quit();
+        }
     }
 
     public ArrayList<String> getInfo() {

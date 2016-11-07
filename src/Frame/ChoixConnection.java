@@ -30,8 +30,8 @@ public class ChoixConnection extends JPanel implements ActionListener {
     public ChoixConnection() {
         setLayout(null);
         setPreferredSize(new Dimension(500, 300));
-        inscription = new JButton("inscription");
-        connection = new JButton("connection");
+        inscription = new JButton("Inscription");
+        connection = new JButton("Connection");
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);
@@ -50,8 +50,12 @@ public class ChoixConnection extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("inscription")) {
+        if (e.getActionCommand().equals("Inscription")) {
             JPanel f = new ChampsSaisie();
+            MyFrame.getInstance().changeFrame(f);
+        }
+        else if (e.getActionCommand().equals("Connection")) {
+            JPanel f = new Connection();
             MyFrame.getInstance().changeFrame(f);
         }
     }

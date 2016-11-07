@@ -52,4 +52,9 @@ public class MyFrame extends JPanel {
         frame.setVisible(true);
         this.actualPanel = jp;
     }
+    
+    public void quit()
+    {
+        frame.dispose();
+    }
 }

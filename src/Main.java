@@ -35,9 +35,5 @@ public class Main {
         MyFrame.getInstance().setActualPanel(jp);
         //Ecran pour soit se connecter, soit s'inscrire
         myF.startPoint(jp);
-        //Ecran pour s'inscrire
-//        f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
-        
-        //Ecran pour se connecter
     }
 }
