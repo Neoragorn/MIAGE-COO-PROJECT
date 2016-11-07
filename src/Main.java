@@ -2,9 +2,15 @@
 import Models.User;
 import Persistence.PersistenceConnection;
 import Persistence.UserBdd;
+
+import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
+import javax.swing.JFrame;
+
+import Frame.ChampsSaisie;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,5 +34,12 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+        
+		JFrame f = new JFrame("Messenger");
+		f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		f.pack(); 
+		f.setVisible(true);
+
     }
 }
