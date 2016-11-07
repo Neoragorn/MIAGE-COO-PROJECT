@@ -1,21 +1,27 @@
 package Models;
 
 public class User {
+
     private String pseudo;
     private String mail;
     private String pwd;
     private int idUser;
 
-    public User()
-    {
-        
+    public User() {
+
     }
-    
+
     public User(int id, String pseudo, String pwd, String mail) {
         this.pseudo = pseudo;
         this.mail = mail;
         this.pwd = pwd;
         this.idUser = id;
+    }
+
+    public User(String pseudo, String pwd, String mail) {
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.pwd = pwd;
     }
 
     public String getPseudo() {
@@ -49,10 +55,9 @@ public class User {
     public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
-    
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ("id: " + this.idUser + "\nPseudo : " + this.pseudo + "\nmail: " + this.mail);
     }
 }
