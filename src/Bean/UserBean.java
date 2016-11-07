@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class UserBean {
 
     private User user = null;
+    private boolean connected = false;
 
     public UserBean() {
 
@@ -28,6 +29,18 @@ public class UserBean {
             inst = new UserBean();
         }
         return inst;
+    }
+
+    public boolean isUserConnected() {
+        return connected;
+    }
+
+    public void connectUser() {
+        this.connected = true;
+    }
+
+    public void disconnecttUser() {
+        this.connected = false;
     }
 
     public void addUserBdd(ArrayList<String> l) {

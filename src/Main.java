@@ -1,14 +1,13 @@
 
-import Models.User;
 import Persistence.PersistenceConnection;
-import Persistence.UserBdd;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import Frame.ChampsSaisie;
-import java.util.ArrayList;
+import Frame.ChoixConnection;
+import Frame.MyFrame;
+import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,24 +22,27 @@ public class Main {
 
     public static void main(String[] args) {
 
-        PersistenceConnection co = new PersistenceConnection();
-
+        PersistenceConnection co = new PersistenceConnection();        
         try {
             co.startConnection("casier", "C&?1+mur");
-//            User user = new User(3, "Neor", "123456789", "b@g.com");  
-            //          UserBdd.insertUser(user);
-            User user = UserBdd.getUser("Neor", "123456789");
+/*            User user = UserBdd.getUser("Neor", "123456789");
             if (user != null) {
                 System.out.println(user.toString());
-            }
+            }*/
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        JFrame f = new JFrame("Messenger");
-        f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.pack();
-        f.setVisible(true);
+        MyFrame myF = new MyFrame();
+        MyFrame.setInst(myF);                
+        JPanel jp = new ChoixConnection();
+
+        //Ecran pour soit se connecter, soit s'inscrire
+        myF.changeFrame(jp);
+        
+        //Ecran pour s'inscrire
+//        f.getContentPane().add(new ChampsSaisie(), BorderLayout.SOUTH);
+        
+        //Ecran pour se connecter
     }
 }

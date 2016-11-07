@@ -11,13 +11,6 @@ public class User {
 
     }
 
-    public User(int id, String pseudo, String pwd, String mail) {
-        this.pseudo = pseudo;
-        this.mail = mail;
-        this.pwd = pwd;
-        this.idUser = id;
-    }
-
     public User(String pseudo, String pwd, String mail) {
         this.pseudo = pseudo;
         this.mail = mail;
