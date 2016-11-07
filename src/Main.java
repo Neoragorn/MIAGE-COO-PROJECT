@@ -23,7 +23,7 @@ public class Main {
 
         try {
             co.startConnection("casier", "C&?1+mur");
-            User user = new User(1, "Neor", "123456789", "b@g.com");  
+            User user = new User(2, "Neor", "123456789", "b@g.com");  
             UserBdd.insertUser(user);                        
         } catch (Exception e) {
             System.out.println(e);
