@@ -31,7 +31,8 @@ public class Main {
             co.startConnection("casier", "C&?1+mur");
 //            User user = new User(3, "Neor", "123456789", "b@g.com");  
             //          UserBdd.insertUser(user);
-            User user = UserBdd.getUser("Neor","123456789");
+            User user = UserBdd.getUser("Neor","12345789");
+            if (user != null)
             System.out.println(user.toString());
         } catch (Exception e) {
             System.out.println(e);
