@@ -63,7 +63,7 @@ public class ChampsSaisie extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Valider")) {
+        if (e.getActionCommand().equals("Valid")) {
             Pseudo = TFPseudo.getText();
             Mail = TFMail.getText();
             Password = TFPassword.getText();
@@ -73,7 +73,7 @@ public class ChampsSaisie extends JPanel implements ActionListener {
             UserBean.getInstance().addUserBdd(info);
             MyFrame.getInstance().changeFrame(new ChoixConnection());
         }
-        else if (e.getActionCommand().equals("Quitter")) {
+        else if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
         }
     }
