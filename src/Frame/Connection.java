@@ -12,16 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-/**
- *
- * @author sofian
- */
 public class Connection extends JPanel implements ActionListener {
 
     static JTextField TFPseudo;
-    static JTextField TFPassword;
+    static JPasswordField TFPassword;
     JButton boutonConnection;
 
     static String Pseudo;
@@ -30,12 +27,12 @@ public class Connection extends JPanel implements ActionListener {
     public Connection() {
         setLayout(null);
         setPreferredSize(new Dimension(500, 300));
-        boutonConnection = new JButton("Se Connecter");
+        boutonConnection = new JButton("Connect");
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);
         TFPseudo = new JTextField("Pseudo");
-        TFPassword = new JTextField("Password");
+        TFPassword = new JPasswordField("Password");
         TFPseudo.setBackground(new Color(255, 255, 255));
         TFPseudo.setForeground(new Color(0, 0, 0));
         TFPseudo.setBounds(150, 50, 200, 30);
@@ -53,13 +50,13 @@ public class Connection extends JPanel implements ActionListener {
 
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Se Connecter")) {
+        if (e.getActionCommand().equals("Connect")) {
             Pseudo = TFPseudo.getText();
             Password = TFPassword.getText();
-            UserBean.getInstance().connectUser(Pseudo, Password);
-//            MyFrame.getInstance().changeFrame(new ChoixConnection());
+            if(UserBean.getInstance().connectUser(Pseudo, Password)){
+            	MyFrame.getInstance().changeFrame(new Home());
+            }
         }
     }
 

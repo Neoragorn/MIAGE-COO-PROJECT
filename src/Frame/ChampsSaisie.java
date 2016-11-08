@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class ChampsSaisie extends JPanel implements ActionListener {
@@ -21,7 +22,7 @@ public class ChampsSaisie extends JPanel implements ActionListener {
     private ArrayList<String> info = new ArrayList();
     static JTextField TFPseudo;
     static JTextField TFMail;
-    static JTextField TFPassword;
+    static JPasswordField TFPassword;
     static String Pseudo;
     static String Mail;
     static String Password;
@@ -29,11 +30,11 @@ public class ChampsSaisie extends JPanel implements ActionListener {
     public ChampsSaisie() {
         setLayout(null);
         setPreferredSize(new Dimension(500, 300));
-        validation = new JButton("Valider");
-        quitter = new JButton("Quitter");
+        validation = new JButton("Valid");
+        quitter = new JButton("Quit");
         TFPseudo = new JTextField("Pseudo");
         TFMail = new JTextField("Mail");
-        TFPassword = new JTextField("Password");
+        TFPassword = new JPasswordField();
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);

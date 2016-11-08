@@ -53,8 +53,7 @@ public class MyFrame extends JPanel {
         this.actualPanel = jp;
     }
     
-    public void quit()
-    {
+    public void quit() {
         frame.dispose();
     }
 }

@@ -18,10 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author sofian
- */
 public class ChoixConnection extends JPanel implements ActionListener {
 
     JButton inscription;
@@ -48,7 +44,6 @@ public class ChoixConnection extends JPanel implements ActionListener {
         add(p1);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Inscription")) {
             JPanel f = new ChampsSaisie();

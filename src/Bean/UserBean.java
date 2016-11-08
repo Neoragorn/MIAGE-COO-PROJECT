@@ -35,18 +35,21 @@ public class UserBean {
         return connected;
     }
 
-    public void connectUser(String pseudo, String pwd) {
+    public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
             this.connected = true;
             if (user != null) {
                 System.out.println("You are connected!");
+                return true;
             } else {
                 System.out.println("Error in the login/pwd!");
+                return false;
             }
         } catch (Exception err) {
             System.out.println(err);
         }
+		return false;
     }
 
     public void disconnecttUser() {
