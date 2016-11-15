@@ -39,10 +39,10 @@ public class UserBean {
     public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
-            ArrayList<Friend> friend = UserBdd.getFriends(user);
-            user.setFriends(friend);
-            this.connected = true;
             if (user != null) {
+                ArrayList<Friend> friend = UserBdd.getFriends(user);
+                user.setFriends(friend);
+                this.connected = true;
                 this.user = user;
                 System.out.println("You are connected!");
                 return true;
@@ -53,7 +53,7 @@ public class UserBean {
         } catch (Exception err) {
             System.out.println(err);
         }
-		return false;
+        return false;
     }
 
     public void disconnecttUser() {

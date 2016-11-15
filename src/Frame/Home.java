@@ -24,6 +24,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton quitter;
     private JButton createDiscussion;
     private JButton profile;
+    private JButton sendMessage;
 
     private JList discussionGroup;
     private JList friends;
@@ -48,6 +49,9 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         quitter = new JButton("Quit");
         quitter.setBounds(100, 700, 100, 50);
 
+        sendMessage = new JButton("Send Message");
+        sendMessage.setBounds(100, 500, 200, 50);
+
         profile = new JButton("Profile");
         profile.setBounds(200, 10, 80, 30);
 
@@ -61,8 +65,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         listFriend = new DefaultListModel();
         ArrayList<Friend> userFriends = UserBean.getInstance().getUser().getFriends();
-        for (Friend friend : userFriends)
-        {
+        for (Friend friend : userFriends) {
             listFriend.addElement(friend.getPseudo() + "    \t\t\tMail : " + friend.getMail());
         }
 
@@ -89,11 +92,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(pseudo);
         add(scrollDiscussion);
         add(scrollFriend);
+        add(sendMessage);
         add(quitter, BorderLayout.PAGE_END);
         add(profile, BorderLayout.PAGE_END);
         add(createDiscussion, BorderLayout.PAGE_END);
     }
-    
+
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 

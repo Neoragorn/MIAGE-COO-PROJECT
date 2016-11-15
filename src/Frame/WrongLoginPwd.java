@@ -12,11 +12,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Connection extends JPanel implements ActionListener {
+/**
+ *
+ * @author sofian
+ */
+public class WrongLoginPwd extends JPanel implements ActionListener {
 
     static JTextField TFPseudo;
     static JPasswordField TFPassword;
@@ -25,9 +30,12 @@ public class Connection extends JPanel implements ActionListener {
     static String Pseudo;
     static String Password;
 
-    public Connection() {
+    private JLabel wrongMessage;
+
+    public WrongLoginPwd() {
         setLayout(null);
         setPreferredSize(new Dimension(500, 300));
+
         boutonConnection = new JButton("Connect");
         JPanel p1 = new JPanel();
         p1.setLayout(null);
@@ -43,9 +51,14 @@ public class Connection extends JPanel implements ActionListener {
         boutonConnection.setBounds(150, 180, 150, 20);
         boutonConnection.addActionListener(this);
 
+        wrongMessage = new JLabel("Wrong login or/and password. Try again");
+        wrongMessage.setOpaque(true);
+        wrongMessage.setBounds(150, 150, 300, 20);
+        
         p1.add(boutonConnection);
         p1.add(TFPassword);
         p1.add(TFPseudo);
+        p1.add(wrongMessage);
         p1.setBounds(0, 0, 500, 300);
         add(p1);
 
@@ -65,5 +78,4 @@ public class Connection extends JPanel implements ActionListener {
             }
         }
     }
-
 }
