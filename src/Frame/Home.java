@@ -1,17 +1,20 @@
 package Frame;
 
+import Bean.UserBean;
+import Models.Friend;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,12 +23,15 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
     private JButton quitter;
     private JButton createDiscussion;
+    private JButton profile;
 
     private JList discussionGroup;
     private JList friends;
 
     private DefaultListModel listDiscussion;
     private DefaultListModel listFriend;
+
+    private JLabel pseudo;
 
     public Home() {
         setLayout(null);
@@ -35,8 +41,15 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         p1.setLayout(null);
         p1.setOpaque(false);
 
+        pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
+        pseudo.setOpaque(true);
+        pseudo.setBounds(20, 10, 300, 20);
+
         quitter = new JButton("Quit");
         quitter.setBounds(100, 700, 100, 50);
+
+        profile = new JButton("Profile");
+        profile.setBounds(200, 10, 80, 30);
 
         createDiscussion = new JButton("Create discussion");
         createDiscussion.setBounds(1000, 700, 200, 50);
@@ -47,9 +60,11 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         listDiscussion.addElement("Discussion 3");
 
         listFriend = new DefaultListModel();
-        listFriend.addElement("Jane Doe");
-        listFriend.addElement("John Smith");
-        listFriend.addElement("Kathy Green");
+        ArrayList<Friend> userFriends = UserBean.getInstance().getUser().getFriends();
+        for (Friend friend : userFriends)
+        {
+            listFriend.addElement(friend.getPseudo() + "    \t\t\tMail : " + friend.getMail());
+        }
 
         discussionGroup = new JList(listDiscussion);
         discussionGroup.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -67,16 +82,18 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         scrollDiscussion.setBounds(650, 10, 1000, 600);
 
         JScrollPane scrollFriend = new JScrollPane(friends);
-        scrollFriend.setBounds(50, 10, 500, 400);
+        scrollFriend.setBounds(50, 50, 500, 400);
 
         quitter.addActionListener(this);
 
+        add(pseudo);
         add(scrollDiscussion);
         add(scrollFriend);
         add(quitter, BorderLayout.PAGE_END);
+        add(profile, BorderLayout.PAGE_END);
         add(createDiscussion, BorderLayout.PAGE_END);
     }
-
+    
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 

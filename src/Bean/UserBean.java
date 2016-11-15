@@ -1,5 +1,6 @@
 package Bean;
 
+import Models.Friend;
 import Models.User;
 import Persistence.UserBdd;
 import java.util.ArrayList;
@@ -38,8 +39,11 @@ public class UserBean {
     public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
+            ArrayList<Friend> friend = UserBdd.getFriends(user);
+            user.setFriends(friend);
             this.connected = true;
             if (user != null) {
+                this.user = user;
                 System.out.println("You are connected!");
                 return true;
             } else {
@@ -54,6 +58,14 @@ public class UserBean {
 
     public void disconnecttUser() {
         this.connected = false;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void addUserBdd(ArrayList<String> l) {

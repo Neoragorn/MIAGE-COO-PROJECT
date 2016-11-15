@@ -5,6 +5,7 @@
  */
 package Persistence;
 
+import Models.Friend;
 import Models.User;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -76,6 +78,24 @@ public class UserBdd {
             }
         }
         return null;
+    }
+
+    public static ArrayList<Friend> getFriends(User user) throws SQLException {
+        ArrayList<Friend> friends = new ArrayList();
+        String req = "SELECT u.pseudo, u.mail "
+                + "FROM Friend f "
+                + "JOIN User u ON f.idFriend = u.idUser "
+                + "WHERE f.idUser = ?;";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, user.getIdUser());
+        ResultSet rs = pss.executeQuery();
+        while (rs.next()) {
+            Friend friend = new Friend();
+            friend.setPseudo(rs.getString(1));
+            friend.setMail(rs.getString(2));
+            friends.add(friend);
+        }
+        return friends;
     }
 
     /*    public static void updateUser(User user) {

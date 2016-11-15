@@ -1,11 +1,15 @@
 package Models;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 public class User {
 
     private String pseudo;
     private String mail;
     private String pwd;
     private int idUser;
+    private ArrayList<Friend> friends = new ArrayList();
 
     public User() {
 
@@ -17,6 +21,15 @@ public class User {
         this.pwd = pwd;
     }
 
+    public ArrayList<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<Friend> friends) {
+        this.friends = friends;
+    }
+
+    
     public String getPseudo() {
         return pseudo;
     }
