@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class MyFrame extends JPanel {
 
-    private JFrame frame = new JFrame("Messenger");
+    private JFrame frame = new JFrame("Messenger Connection");
 
     private JPanel actualPanel = null;
 
@@ -15,6 +15,15 @@ public class MyFrame extends JPanel {
     public MyFrame() {
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
+    
     public static MyFrame getInst() {
         return inst;
     }

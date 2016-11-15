@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -54,8 +55,11 @@ public class Connection extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("Connect")) {
             Pseudo = TFPseudo.getText();
             Password = TFPassword.getText();
-            if(UserBean.getInstance().connectUser(Pseudo, Password)){
-            	MyFrame.getInstance().changeFrame(new Home());
+            if (UserBean.getInstance().connectUser(Pseudo, Password)) {
+                Home home = new Home();
+                MyFrame.getInstance().getFrame().dispose();
+                MyFrame.getInstance().setFrame(new JFrame("Welcome in Messenger"));
+                MyFrame.getInstance().changeFrame(home);
             }
         }
     }
