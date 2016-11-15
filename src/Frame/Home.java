@@ -1,11 +1,14 @@
 package Frame;
 
+import Bean.DiscussionGroupBean;
 import Bean.UserBean;
 import Models.Friend;
+import Persistence.DiscussionGroupBdd;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
@@ -57,11 +60,19 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         createDiscussion = new JButton("Create discussion");
         createDiscussion.setBounds(1000, 700, 200, 50);
+        createDiscussion.addActionListener(this);
 
         listDiscussion = new DefaultListModel();
-        listDiscussion.addElement("Discussion 1");
-        listDiscussion.addElement("Discussion 2");
-        listDiscussion.addElement("Discussion 3");
+
+        try {
+            ArrayList<String> discussionGroups = DiscussionGroupBean.getDiscussionGroups();
+            for (String discusionGroup : discussionGroups)
+            {
+                listDiscussion.addElement(discusionGroup);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         listFriend = new DefaultListModel();
         ArrayList<Friend> userFriends = UserBean.getInstance().getUser().getFriends();
@@ -115,6 +126,14 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
+        }
+        if (e.getActionCommand().equals("Create discussion")) {
+            try {
+                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe");
+                MyFrame.getInstance().changeFrame(this);
+            } catch (Exception err) {
+                System.out.println(err);
+            }
         }
     }
 
