@@ -130,7 +130,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         if (e.getActionCommand().equals("Create discussion")) {
             try {
                 DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe");
-                MyFrame.getInstance().changeFrame(this);
+                MyFrame.getInstance().changeFrame(new Home());
             } catch (Exception err) {
                 System.out.println(err);
             }
