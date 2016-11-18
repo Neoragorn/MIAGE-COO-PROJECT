@@ -9,7 +9,7 @@ public class MyFrame extends JPanel {
     private JFrame frame = new JFrame("Messenger Connection");
 
     private MyFrame secondMyFrame;
-    
+
     private JPanel actualPanel = null;
 
     public static MyFrame inst;
@@ -33,13 +33,10 @@ public class MyFrame extends JPanel {
         this.secondMyFrame = secondMyFrame;
     }
 
-
-
     public MyFrame getSecondMyFrame() {
         return secondMyFrame;
     }
 
-    
     public static MyFrame getInst() {
         return inst;
     }
@@ -60,10 +57,12 @@ public class MyFrame extends JPanel {
     }
 
     public void startPoint(JPanel jp) {
-        frame.getContentPane().add(jp, BorderLayout.SOUTH);
+        frame.setContentPane(jp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.repaint();
+        frame.revalidate();
         this.actualPanel = jp;
     }
 
@@ -71,10 +70,12 @@ public class MyFrame extends JPanel {
         if (actualPanel != null) {
             actualPanel.removeAll();
         }
-        frame.getContentPane().add(jp, BorderLayout.SOUTH);
+        frame.setContentPane(jp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.repaint();
+        frame.revalidate();
         this.actualPanel = jp;
     }
 

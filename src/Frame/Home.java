@@ -57,6 +57,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         profile = new JButton("Profile");
         profile.setBounds(200, 10, 80, 30);
+        profile.addActionListener(this);
 
         createDiscussion = new JButton("Create discussion");
         createDiscussion.setBounds(1000, 700, 200, 50);
@@ -108,6 +109,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(quitter, BorderLayout.PAGE_END);
         add(profile, BorderLayout.PAGE_END);
         add(createDiscussion, BorderLayout.PAGE_END);
+        p1.setBounds(0, 0, 1500, 800);
+        add(p1);
     }
 
     public void valueChanged(ListSelectionEvent e) {
@@ -128,6 +131,9 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
         }
+        if (e.getActionCommand().equals("Profile")) {
+            MyFrame.getInstance().changeFrame(new Profile());
+        }
         if (e.getActionCommand().equals("Create discussion")) {
             try {
                 DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe", "premier description");
@@ -135,7 +141,6 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
                 MyFrame createDiscussion = new MyFrame("Create Discussion");
                 MyFrame.getInstance().setSecondMyFrame(createDiscussion);
                 createDiscussion.startPoint(new CreateDiscussion());
-//                MyFrame.getInstance().changeFrame(new Home());
             } catch (Exception err) {
                 System.out.println(err);
             }

@@ -57,7 +57,7 @@ public class ChampsSaisie extends JPanel implements ActionListener {
         TFPseudo.setBounds(200, 50, 200, 30);
         TFMail.setBounds(200, 100, 200, 30);
         TFPassword.setBounds(200, 150, 200, 30);
-
+        
         p1.setBounds(0, 0, 500, 300);
         add(p1);
     }
