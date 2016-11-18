@@ -5,6 +5,7 @@
  */
 package Bean;
 
+import Models.DiscussionGroup;
 import Models.User;
 import Persistence.DiscussionGroupBdd;
 import java.sql.SQLException;
@@ -16,11 +17,11 @@ import java.util.ArrayList;
  */
 public class DiscussionGroupBean {
 
-    public static void createDiscussion(User user, String title) throws SQLException {
-        DiscussionGroupBdd.createDiscussionGroupBdd(user.getIdUser(), title);
+    public static void createDiscussion(User user, String title, String description) throws SQLException {
+        DiscussionGroupBdd.createDiscussionGroupBdd(user.getIdUser(), title, description);
     }
 
-    public static ArrayList<String> getDiscussionGroups() throws SQLException {
+    public static ArrayList<DiscussionGroup> getDiscussionGroups() throws SQLException {
         try {
             return DiscussionGroupBdd.getDiscussionGroupBdd();
         } catch (Exception e) {

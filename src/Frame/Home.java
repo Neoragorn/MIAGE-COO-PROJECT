@@ -2,17 +2,17 @@ package Frame;
 
 import Bean.DiscussionGroupBean;
 import Bean.UserBean;
+import Models.DiscussionGroup;
 import Models.Friend;
-import Persistence.DiscussionGroupBdd;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -65,10 +65,11 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         listDiscussion = new DefaultListModel();
 
         try {
-            ArrayList<String> discussionGroups = DiscussionGroupBean.getDiscussionGroups();
-            for (String discusionGroup : discussionGroups)
-            {
-                listDiscussion.addElement(discusionGroup);
+            ArrayList<DiscussionGroup> discussionGroups = DiscussionGroupBean.getDiscussionGroups();
+            for (DiscussionGroup discusionGroup : discussionGroups) {
+                listDiscussion.addElement(discusionGroup.getTitle());
+                listDiscussion.addElement(discusionGroup.getDescription());
+                listDiscussion.addElement("\n");
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -129,8 +130,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
         if (e.getActionCommand().equals("Create discussion")) {
             try {
-                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe");
-                MyFrame.getInstance().changeFrame(new Home());
+                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe", "premier description");
+                MyFrame.getInstance().getFrame().setVisible(false);
+                MyFrame createDiscussion = new MyFrame("Create Discussion");
+                MyFrame.getInstance().setSecondMyFrame(createDiscussion);
+                createDiscussion.startPoint(new CreateDiscussion());
+//                MyFrame.getInstance().changeFrame(new Home());
             } catch (Exception err) {
                 System.out.println(err);
             }

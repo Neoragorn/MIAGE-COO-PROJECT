@@ -8,11 +8,17 @@ public class MyFrame extends JPanel {
 
     private JFrame frame = new JFrame("Messenger Connection");
 
+    private MyFrame secondMyFrame;
+    
     private JPanel actualPanel = null;
 
     public static MyFrame inst;
 
     public MyFrame() {
+    }
+
+    public MyFrame(String title) {
+        this.frame.setTitle(title);
     }
 
     public JFrame getFrame() {
@@ -21,6 +27,16 @@ public class MyFrame extends JPanel {
 
     public void setFrame(JFrame frame) {
         this.frame = frame;
+    }
+
+    public void setSecondMyFrame(MyFrame secondMyFrame) {
+        this.secondMyFrame = secondMyFrame;
+    }
+
+
+
+    public MyFrame getSecondMyFrame() {
+        return secondMyFrame;
     }
 
     
@@ -61,7 +77,7 @@ public class MyFrame extends JPanel {
         frame.setVisible(true);
         this.actualPanel = jp;
     }
-    
+
     public void quit() {
         frame.dispose();
     }
