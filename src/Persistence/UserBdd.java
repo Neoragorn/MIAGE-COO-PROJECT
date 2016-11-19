@@ -5,6 +5,7 @@
  */
 package Persistence;
 
+import Bean.UserBean;
 import Models.Friend;
 import Models.User;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +50,29 @@ public class UserBdd {
         pss.executeUpdate();
     }
 
+    public static ArrayList<User> getAllUser() throws SQLException {
+        ArrayList<User> userList = new ArrayList();
+
+        String req = "Select idUser, pseudo, mail "
+                + "FROM User "
+                + "WHERE idUser not in "
+                + "(SELECT u.idUser "
+                + "FROM Friend f "
+                + "JOIN User u ON f.idFriend = u.idUser "
+                + "WHERE f.idUser = ?) AND idUser != ?";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, UserBean.getInstance().getUser().getIdUser());
+        pss.setInt(2, UserBean.getInstance().getUser().getIdUser());
+        System.out.println(UserBean.getInstance().getUser().getIdUser());
+        ResultSet rs = pss.executeQuery();
+        while (rs.next()) {
+            System.out.println(rs.getString(2));
+            User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            userList.add(user);
+        }
+        return userList;
+    }
+
     public static User getUser(String pseudo, String pwd) throws SQLException, NoSuchAlgorithmException {
         try {
             User user = new User();
@@ -82,7 +106,7 @@ public class UserBdd {
 
     public static ArrayList<Friend> getFriends(User user) throws SQLException {
         ArrayList<Friend> friends = new ArrayList();
-        String req = "SELECT u.pseudo, u.mail "
+        String req = "SELECT u.idUser, u.pseudo, u.mail "
                 + "FROM Friend f "
                 + "JOIN User u ON f.idFriend = u.idUser "
                 + "WHERE f.idUser = ?;";
@@ -91,11 +115,20 @@ public class UserBdd {
         ResultSet rs = pss.executeQuery();
         while (rs.next()) {
             Friend friend = new Friend();
-            friend.setPseudo(rs.getString(1));
-            friend.setMail(rs.getString(2));
+            friend.setIdFriend(rs.getInt(1));
+            friend.setPseudo(rs.getString(2));
+            friend.setMail(rs.getString(3));
             friends.add(friend);
         }
         return friends;
+    }
+
+    public static void removeFriend(User user, Friend friend) throws SQLException {
+        String req = "DELETE FROM Friend WHERE idUser = ? AND idFriend = ? ";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, user.getIdUser());
+        pss.setInt(2, friend.getIdFriend());
+        pss.executeUpdate();
     }
 
     /*    public static void updateUser(User user) {

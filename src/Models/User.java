@@ -15,6 +15,12 @@ public class User {
 
     }
 
+    public User(int id, String pseudo, String mail) {
+        this.idUser = id;
+        this.pseudo = pseudo;
+        this.mail = mail;
+    }
+
     public User(String pseudo, String pwd, String mail) {
         this.pseudo = pseudo;
         this.mail = mail;
@@ -29,7 +35,6 @@ public class User {
         this.friends = friends;
     }
 
-    
     public String getPseudo() {
         return pseudo;
     }

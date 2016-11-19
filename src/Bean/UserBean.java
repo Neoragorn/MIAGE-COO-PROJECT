@@ -3,6 +3,7 @@ package Bean;
 import Models.Friend;
 import Models.User;
 import Persistence.UserBdd;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /*
@@ -32,8 +33,26 @@ public class UserBean {
         return inst;
     }
 
+    public ArrayList<User> getAllUser() {
+        try {
+            ArrayList<User> userList = UserBdd.getAllUser();
+            return userList;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     public boolean isUserConnected() {
         return connected;
+    }
+
+    public void removeFriend(String pseudo, String mail) throws SQLException {
+        for (Friend f : this.user.getFriends()) {
+            if (f.getPseudo().equals(pseudo) && f.getMail().equals(mail)) {
+                UserBdd.removeFriend(user, f);
+            }
+        }
     }
 
     public boolean connectUser(String pseudo, String pwd) {
@@ -54,6 +73,11 @@ public class UserBean {
             System.out.println(err);
         }
         return false;
+    }
+
+    public void updateUserFriendInfo(User user) throws SQLException {
+        ArrayList<Friend> friend = UserBdd.getFriends(user);
+        user.setFriends(friend);
     }
 
     public void disconnecttUser() {

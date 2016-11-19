@@ -11,12 +11,22 @@ package Models;
  */
 public class Friend {
 
+    private int idFriend;
     private String pseudo;
     private String mail;
 
     public Friend() {
     }
 
+    public int getIdFriend() {
+        return idFriend;
+    }
+
+    public void setIdFriend(int idFriend) {
+        this.idFriend = idFriend;
+    }
+
+    
     public String getPseudo() {
         return pseudo;
     }

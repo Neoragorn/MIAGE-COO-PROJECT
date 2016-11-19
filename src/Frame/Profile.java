@@ -6,8 +6,8 @@
 package Frame;
 
 import Bean.UserBean;
-import static Frame.ChampsSaisie.TFPseudo;
 import Models.Friend;
+import Models.User;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,7 +18,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -33,11 +32,11 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
 
     private String pseudo;
     private String mail;
-//    private String pwd;
 
     static JTextField TFPseudo;
     static JTextField TFMail;
     private JList friends;
+    private JList users;
 
     private JButton returnHome;
     private JButton addFriend;
@@ -45,6 +44,40 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
 
     static String Password;
     private DefaultListModel listFriend;
+    private DefaultListModel listUsers;
+
+    class RemoveFriendListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            //This method can be called only if
+            //there's a valid selection
+            //so go ahead and remove whatever's selected.
+            int index = friends.getSelectedIndex();
+            for (Friend f : UserBean.getInstance().getUser().getFriends()) {
+                String pseudoMail = f.getPseudo() + "//Mail : " + f.getMail();
+                if (pseudoMail.equals(listFriend.elementAt(index))) {
+                    try {
+                        UserBean.getInstance().removeFriend(f.getPseudo(), f.getMail());
+                    } catch (Exception err) {
+                        System.out.println(err);
+                    }
+                    break;
+                }
+            }
+            listFriend.remove(index);
+            int size = listFriend.getSize();
+            if (size == 0) { //Nobody's left, disable firing.
+                removeFriend.setEnabled(false);
+            } else { //Select an index.
+                if (index == listFriend.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+                friends.setSelectedIndex(index);
+                friends.ensureIndexIsVisible(index);
+            }
+        }
+    }
 
     public Profile() {
         setLayout(null);
@@ -61,22 +94,38 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         returnHome.addActionListener(this);
 
         addFriend = new JButton("Add Friend");
-        addFriend.setBounds(550, 250, 200, 50);
+        addFriend.setBounds(760, 200, 200, 50);
         addFriend.addActionListener(this);
 
         removeFriend = new JButton("remove Friend");
-        removeFriend.setBounds(300, 200, 200, 50);
-        removeFriend.addActionListener(this);
+        removeFriend.setBounds(290, 200, 200, 50);
+        removeFriend.addActionListener(new RemoveFriendListener());
 
         TFPseudo.setBackground(new Color(100, 100, 100));
         TFPseudo.setForeground(new Color(255, 255, 255));
         TFPseudo.setBounds(30, 10, 200, 30);
         TFMail.setBounds(30, 90, 200, 30);
 
+        listUsers = new DefaultListModel();
+        ArrayList<User> usersList = UserBean.getInstance().getAllUser();
+        for (User user : usersList) {
+            listUsers.addElement(user.getPseudo() + "    \t\t\tMail : " + user.getMail());
+        }
+
+        users = new JList(listUsers);
+        users.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        users.setSelectedIndex(0);
+        users.addListSelectionListener(this);
+        users.setVisibleRowCount(5);
+
+        JScrollPane scrollUser = new JScrollPane(users);
+        scrollUser.setBounds(500, 200, 250, 400);
+
         listFriend = new DefaultListModel();
         ArrayList<Friend> userFriends = UserBean.getInstance().getUser().getFriends();
+
         for (Friend friend : userFriends) {
-            listFriend.addElement(friend.getPseudo() + "    \t\t\tMail : " + friend.getMail());
+            listFriend.addElement(friend.getPseudo() + "//Mail : " + friend.getMail());
         }
 
         friends = new JList(listFriend);
@@ -89,6 +138,7 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         scrollFriend.setBounds(30, 200, 250, 400);
 
         p1.add(scrollFriend);
+        p1.add(scrollUser);
         p1.add(returnHome);
         p1.add(removeFriend);
         p1.add(addFriend);
@@ -99,12 +149,28 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
     }
 
     public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting() == false) {
 
+            if (friends.getSelectedIndex() == -1) {
+                //No selection, disable fire button.
+                removeFriend.setEnabled(false);
+
+            } else {
+                //Selection, enable the fire button.
+                removeFriend.setEnabled(true);
+            }
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Return")) {
-            MyFrame.getInstance().changeFrame(new Home());
+            try {
+                UserBean.getInstance().updateUserFriendInfo(UserBean.getInstance().getUser());
+                MyFrame.getInstance().changeFrame(new Home());
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+
         }
     }
 }
