@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class User {
 
-    private String pseudo;
-    private String mail;
-    private String pwd;
-    private int idUser;
-    private ArrayList<Friend> friends = new ArrayList();
+    protected String pseudo;
+    protected String mail;
+    protected String pwd;
+    protected int idUser;
+    protected ArrayList<Friend> friends = new ArrayList();
 
     public User() {
 

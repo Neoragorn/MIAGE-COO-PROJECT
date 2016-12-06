@@ -19,7 +19,7 @@ public class UserBean {
 
     private User user = null;
     private boolean connected = false;
-
+    
     public UserBean() {
 
     }
