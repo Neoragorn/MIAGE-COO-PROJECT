@@ -29,6 +29,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton profile;
     private JButton sendMessage;
     private JButton answer;
+    private JButton manage;
 
     private JList discussionGroup;
     private JList friends;
@@ -58,7 +59,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         sendMessage = new JButton("Send Message");
         sendMessage.setBounds(80, 280, 200, 50);
 
-        answer = new JButton("Answxer");
+        answer = new JButton("Answer");
         answer.setBounds(80, 600, 200, 50);
 
         profile = new JButton("Profile");
@@ -71,9 +72,13 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         listDiscussion = new DefaultListModel();
         boiteReception = new DefaultListModel();
+        
+        manage = new JButton("Manage");
+        manage.setBounds(300, 10, 80, 30);
+        manage.addActionListener(this);
 
-/*        try {
-                
+
+        /*try { 
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -123,6 +128,10 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(sendMessage);
         add(quitter, BorderLayout.PAGE_END);
         add(profile, BorderLayout.PAGE_END);
+        
+        if(UserBean.getInstance().getUser().getPseudo().equals("admin")){
+        	add(manage);
+        }
         add(createDiscussion, BorderLayout.PAGE_END);
         p1.setBounds(0, 0, 1500, 800);
         add(p1);
@@ -143,8 +152,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     }
 
     public void actionPerformed(ActionEvent e) {
+    
         if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
+        }
+        if (e.getActionCommand().equals("Manage")) {
+            MyFrame.getInstance().changeFrame(new Manage());
         }
         if (e.getActionCommand().equals("Profile")) {
             MyFrame.getInstance().changeFrame(new Profile());
