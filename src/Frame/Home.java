@@ -28,12 +28,15 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton createDiscussion;
     private JButton profile;
     private JButton sendMessage;
+    private JButton answer;
 
     private JList discussionGroup;
     private JList friends;
+    private JList privateMessage;
 
     private DefaultListModel listDiscussion;
     private DefaultListModel listFriend;
+    private DefaultListModel boiteReception;
 
     private JLabel pseudo;
 
@@ -53,7 +56,10 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         quitter.setBounds(100, 700, 100, 50);
 
         sendMessage = new JButton("Send Message");
-        sendMessage.setBounds(100, 500, 200, 50);
+        sendMessage.setBounds(80, 280, 200, 50);
+
+        answer = new JButton("Answxer");
+        answer.setBounds(80, 600, 200, 50);
 
         profile = new JButton("Profile");
         profile.setBounds(200, 10, 80, 30);
@@ -64,6 +70,14 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         createDiscussion.addActionListener(this);
 
         listDiscussion = new DefaultListModel();
+        boiteReception = new DefaultListModel();
+
+/*        try {
+                
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } */
 
         try {
             ArrayList<DiscussionGroup> discussionGroups = DiscussionGroupBean.getDiscussionGroups();
@@ -98,11 +112,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         scrollDiscussion.setBounds(650, 10, 1000, 600);
 
         JScrollPane scrollFriend = new JScrollPane(friends);
-        scrollFriend.setBounds(50, 50, 500, 400);
+        scrollFriend.setBounds(50, 50, 500, 200);
 
         quitter.addActionListener(this);
 
         add(pseudo);
+        add(answer);
         add(scrollDiscussion);
         add(scrollFriend);
         add(sendMessage);
