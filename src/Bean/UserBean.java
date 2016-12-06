@@ -1,6 +1,7 @@
 package Bean;
 
 import Models.Friend;
+import Models.Message;
 import Models.User;
 import Persistence.UserBdd;
 import java.sql.SQLException;
@@ -60,7 +61,9 @@ public class UserBean {
             User user = UserBdd.getUser(pseudo, pwd);
             if (user != null) {
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
+                ArrayList<Message> msg = UserBdd.getPrivateMessage(user.getIdUser());
                 user.setFriends(friend);
+                user.setPrivateMessage(msg);                
                 this.connected = true;
                 this.user = user;
                 System.out.println("You are connected!");

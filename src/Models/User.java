@@ -10,6 +10,8 @@ public class User {
     protected String pwd;
     protected int idUser;
     protected ArrayList<Friend> friends = new ArrayList();
+    protected ArrayList<Message> privateMessage = new ArrayList();
+    
 
     public User() {
 
@@ -67,6 +69,15 @@ public class User {
         this.idUser = idUser;
     }
 
+    public ArrayList<Message> getPrivateMessage() {
+        return privateMessage;
+    }
+
+    public void setPrivateMessage(ArrayList<Message> privateMessage) {
+        this.privateMessage = privateMessage;
+    }
+
+    
     @Override
     public String toString() {
         return ("id: " + this.idUser + "\nPseudo : " + this.pseudo + "\nmail: " + this.mail);

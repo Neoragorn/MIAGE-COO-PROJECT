@@ -7,6 +7,7 @@ package Persistence;
 
 import Bean.UserBean;
 import Models.Friend;
+import Models.Message;
 import Models.User;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -63,7 +64,7 @@ public class UserBdd {
         PreparedStatement pss = conn.prepareStatement(req);
         pss.setInt(1, UserBean.getInstance().getUser().getIdUser());
         pss.setInt(2, UserBean.getInstance().getUser().getIdUser());
-        System.out.println(UserBean.getInstance().getUser().getIdUser());
+//        System.out.println(UserBean.getInstance().getUser().getIdUser());
         ResultSet rs = pss.executeQuery();
         while (rs.next()) {
             System.out.println(rs.getString(2));
@@ -71,6 +72,24 @@ public class UserBdd {
             userList.add(user);
         }
         return userList;
+    }
+
+    public static ArrayList<Message> getPrivateMessage(int id) throws SQLException {
+        System.out.println("id => " + id);
+        ArrayList<Message> privateMessage = new ArrayList();
+        String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date FROM PrivateMessage pm "
+                + "join User userEnvoi on pm.idUser = userEnvoi.idUser "
+                + "join User userRecoi on pm.idDestinataire = userRecoi.idUser "
+                + "WHERE pm.idDestinataire = ? "
+                + "ORDER by pm.date DESC";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, id);
+        ResultSet rs = pss.executeQuery();
+        while (rs.next()) {
+            Message msg = new Message(rs.getString(3) , rs.getString(1), rs.getString(2), rs.getDate(4));
+            privateMessage.add(msg);
+        }
+        return privateMessage;
     }
 
     public static User getUser(String pseudo, String pwd) throws SQLException, NoSuchAlgorithmException {

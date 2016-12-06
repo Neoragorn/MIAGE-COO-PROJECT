@@ -4,6 +4,7 @@ import Bean.DiscussionGroupBean;
 import Bean.UserBean;
 import Models.DiscussionGroup;
 import Models.Friend;
+import Models.Message;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,13 +31,13 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton answer;
     private JButton manage;
 
-    private JList discussionGroup;
-    private JList friends;
-    private JList privateMessage;
-
     private DefaultListModel listDiscussion;
     private DefaultListModel listFriend;
     private DefaultListModel boiteReception;
+
+    private JList discussionGroup;
+    private JList friends;
+    private JList privateMessage;
 
     private JLabel pseudo;
 
@@ -61,7 +61,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         answer = new JButton("Answer");
         answer.setBounds(80, 600, 200, 50);
-
+        answer.addActionListener(this);
+        
         profile = new JButton("Profile");
         profile.setBounds(200, 10, 80, 30);
         profile.addActionListener(this);
@@ -72,17 +73,19 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         listDiscussion = new DefaultListModel();
         boiteReception = new DefaultListModel();
-        
+
         manage = new JButton("Manage");
         manage.setBounds(300, 10, 80, 30);
         manage.addActionListener(this);
 
-
-        /*try { 
+        try {
+            ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getPrivateMessage();
+            for (Message msg : privateMsg) {
+                boiteReception.addElement("[" + msg.getDate() + "] " + msg.getAuteur() + " : " + msg.getMessage());
             }
         } catch (Exception e) {
             System.out.println(e);
-        } */
+        }
 
         try {
             ArrayList<DiscussionGroup> discussionGroups = DiscussionGroupBean.getDiscussionGroups();
@@ -113,14 +116,24 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         friends.addListSelectionListener(this);
         friends.setVisibleRowCount(5);
 
+        privateMessage = new JList(boiteReception);
+        privateMessage.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        privateMessage.setSelectedIndex(0);
+        privateMessage.addListSelectionListener(this);
+        privateMessage.setVisibleRowCount(5);
+
         JScrollPane scrollDiscussion = new JScrollPane(discussionGroup);
         scrollDiscussion.setBounds(650, 10, 1000, 600);
 
         JScrollPane scrollFriend = new JScrollPane(friends);
         scrollFriend.setBounds(50, 50, 500, 200);
 
+        JScrollPane scrollPrivateMessage = new JScrollPane(privateMessage);
+        scrollPrivateMessage.setBounds(50, 350, 500, 200);
+
         quitter.addActionListener(this);
 
+        add(scrollPrivateMessage);
         add(pseudo);
         add(answer);
         add(scrollDiscussion);
@@ -128,9 +141,9 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(sendMessage);
         add(quitter, BorderLayout.PAGE_END);
         add(profile, BorderLayout.PAGE_END);
-        
-        if(UserBean.getInstance().getUser().getPseudo().equals("admin")){
-        	add(manage);
+
+        if (UserBean.getInstance().getUser().getPseudo().equals("admin")) {
+            add(manage);
         }
         add(createDiscussion, BorderLayout.PAGE_END);
         p1.setBounds(0, 0, 1500, 800);
@@ -152,7 +165,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     }
 
     public void actionPerformed(ActionEvent e) {
-    
+
         if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
         }
