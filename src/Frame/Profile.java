@@ -46,6 +46,44 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
     private DefaultListModel listFriend;
     private DefaultListModel listUsers;
 
+    class AddFriendListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            //This method can be called only if
+            //there's a valid selection
+            //so go ahead and remove whatever's selected.
+            int index = users.getSelectedIndex();
+            for (User user : UserBean.getInstance().getAllUser()) {
+                String pseudoMail = user.getPseudo() + "Mail : " + user.getMail();
+                pseudoMail = pseudoMail.replaceAll("\t", "");
+                pseudoMail = pseudoMail.replaceAll(" ", "");
+                String userchosen = listUsers.elementAt(index).toString();
+                userchosen = userchosen.replaceAll("\t", "");
+                userchosen = userchosen.replaceAll(" ", "");
+                if (pseudoMail.equals(userchosen)) {
+                    try {
+                        UserBean.getInstance().addFriend(user.getPseudo(), user.getMail());
+                    } catch (Exception err) {
+                        System.out.println(err);
+                    }
+                    break;
+                }
+            }
+            listUsers.remove(index);
+            int size = listUsers.getSize();
+            if (size == 0) { //Nobody's left, disable firing.
+                addFriend.setEnabled(false);
+            } else { //Select an index.
+                if (index == listUsers.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+                users.setSelectedIndex(index);
+                users.ensureIndexIsVisible(index);
+            }
+        }
+    }
+
     class RemoveFriendListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
@@ -95,7 +133,7 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
 
         addFriend = new JButton("Add Friend");
         addFriend.setBounds(760, 200, 200, 50);
-        addFriend.addActionListener(this);
+        addFriend.addActionListener(new AddFriendListener());
 
         removeFriend = new JButton("remove Friend");
         removeFriend.setBounds(290, 200, 200, 50);
@@ -154,10 +192,16 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
             if (friends.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
                 removeFriend.setEnabled(false);
-
             } else {
                 //Selection, enable the fire button.
                 removeFriend.setEnabled(true);
+            }
+            if (users.getSelectedIndex() == -1) {
+                //No selection, disable fire button.
+                addFriend.setEnabled(false);
+            } else {
+                //Selection, enable the fire button.
+                addFriend.setEnabled(true);
             }
         }
     }

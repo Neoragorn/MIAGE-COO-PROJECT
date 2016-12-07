@@ -56,6 +56,15 @@ public class UserBean {
         }
     }
 
+     public void addFriend(String pseudo, String mail) throws SQLException {
+         System.out.println("plop plop ploooop");
+        for (Friend f : this.user.getFriends()) {
+            if (f.getPseudo().equals(pseudo) && f.getMail().equals(mail)) {
+                UserBdd.addFriend(user, f);
+            }
+        }
+    }
+     
     public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);

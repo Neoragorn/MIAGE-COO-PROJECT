@@ -64,10 +64,8 @@ public class UserBdd {
         PreparedStatement pss = conn.prepareStatement(req);
         pss.setInt(1, UserBean.getInstance().getUser().getIdUser());
         pss.setInt(2, UserBean.getInstance().getUser().getIdUser());
-//        System.out.println(UserBean.getInstance().getUser().getIdUser());
         ResultSet rs = pss.executeQuery();
         while (rs.next()) {
-            System.out.println(rs.getString(2));
             User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
             userList.add(user);
         }
@@ -75,7 +73,6 @@ public class UserBdd {
     }
 
     public static ArrayList<Message> getPrivateMessage(int id) throws SQLException {
-        System.out.println("id => " + id);
         ArrayList<Message> privateMessage = new ArrayList();
         String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date FROM PrivateMessage pm "
                 + "join User userEnvoi on pm.idUser = userEnvoi.idUser "
@@ -150,6 +147,15 @@ public class UserBdd {
         pss.executeUpdate();
     }
 
+    public static void addFriend(User user, Friend friend) throws SQLException {
+        System.out.println("hey hey heeeeeey");
+        String req = "INSERT INTO Friend (idFriend, idUser) values (?, ?) "; 
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, friend.getIdFriend());
+        pss.setInt(2, user.getIdUser());
+        pss.executeUpdate();
+    }
+    
     /*    public static void updateUser(User user) {
         
     }*/
