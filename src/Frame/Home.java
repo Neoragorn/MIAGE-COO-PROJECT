@@ -51,7 +51,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
         pseudo.setOpaque(true);
-        pseudo.setBounds(20, 10, 300, 20);
+        pseudo.setBounds(20, 10, 100, 20);
 
         quitter = new JButton("Quit");
         quitter.setBounds(100, 700, 100, 50);
@@ -139,8 +139,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(scrollDiscussion);
         add(scrollFriend);
         add(sendMessage);
-        add(quitter, BorderLayout.PAGE_END);
-        add(profile, BorderLayout.PAGE_END);
+        add(quitter);
+        add(profile);
 
         if (UserBean.getInstance().getUser().getPseudo().equals("admin")) {
             add(manage);
