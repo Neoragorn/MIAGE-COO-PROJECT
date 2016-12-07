@@ -53,16 +53,13 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = users.getSelectedIndex();
+            
             for (User user : UserBean.getInstance().getAllUser()) {
-                String pseudoMail = user.getPseudo() + "Mail : " + user.getMail();
-                pseudoMail = pseudoMail.replaceAll("\t", "");
-                pseudoMail = pseudoMail.replaceAll(" ", "");
-                String userchosen = listUsers.elementAt(index).toString();
-                userchosen = userchosen.replaceAll("\t", "");
-                userchosen = userchosen.replaceAll(" ", "");
+                String pseudoMail = user.getPseudo() + " " + user.getMail();
+                String userchosen = listUsers.elementAt(index).toString();                                
                 if (pseudoMail.equals(userchosen)) {
-                    try {
-                        UserBean.getInstance().addFriend(user.getPseudo(), user.getMail());
+                	try {
+                        UserBean.getInstance().addFriend(user);
                     } catch (Exception err) {
                         System.out.println(err);
                     }
@@ -147,7 +144,7 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         listUsers = new DefaultListModel();
         ArrayList<User> usersList = UserBean.getInstance().getAllUser();
         for (User user : usersList) {
-            listUsers.addElement(user.getPseudo() + "    \t\t\tMail : " + user.getMail());
+            listUsers.addElement(user.getPseudo() + " " + user.getMail());
         }
 
         users = new JList(listUsers);

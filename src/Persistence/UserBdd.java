@@ -148,7 +148,6 @@ public class UserBdd {
     }
 
     public static void addFriend(User user, Friend friend) throws SQLException {
-        System.out.println("hey hey heeeeeey");
         String req = "INSERT INTO Friend (idFriend, idUser) values (?, ?) "; 
         PreparedStatement pss = conn.prepareStatement(req);
         pss.setInt(1, friend.getIdFriend());

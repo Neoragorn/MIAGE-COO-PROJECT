@@ -56,12 +56,12 @@ public class UserBean {
         }
     }
 
-     public void addFriend(String pseudo, String mail) throws SQLException {
-        for (Friend f : this.user.getFriends()) {
-            if (f.getPseudo().equals(pseudo) && f.getMail().equals(mail)) {
-                UserBdd.addFriend(user, f);
-            }
-        }
+     public void addFriend(User user) throws SQLException {
+    	 Friend f = new Friend();
+    	 f.setIdFriend(user.getIdUser());
+    	 f.setPseudo(user.getPseudo());
+    	 f.setMail(user.getMail());
+    	 UserBdd.addFriend(this.user, f);
     }
      
     public boolean connectUser(String pseudo, String pwd) {
