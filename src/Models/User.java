@@ -17,6 +17,7 @@ public class User {
 
     }
 
+    
     public User(int id, String pseudo, String mail) {
         this.idUser = id;
         this.pseudo = pseudo;

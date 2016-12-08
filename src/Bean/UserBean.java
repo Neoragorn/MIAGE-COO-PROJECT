@@ -69,7 +69,7 @@ public class UserBean {
             User user = UserBdd.getUser(pseudo, pwd);
             if (user != null) {
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
-                ArrayList<Message> msg = UserBdd.getPrivateMessage(user.getIdUser());
+                ArrayList<Message> msg = UserBdd.getPrivateMessage(user);
                 user.setFriends(friend);
                 user.setPrivateMessage(msg);                
                 this.connected = true;

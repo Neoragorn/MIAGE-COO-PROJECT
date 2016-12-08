@@ -14,11 +14,11 @@ import java.sql.Date;
 public class Message {
 
     private String message;
-    private String auteur;
-    private String destinataire;
+    private User auteur;
+    private User destinataire;
     private Date date;
 
-    public Message(String message, String auteur, String destinataire, Date date) {
+    public Message(String message, User auteur, User destinataire, Date date) {
         this.message = message;
         this.auteur = auteur;
         this.destinataire = destinataire;
@@ -33,21 +33,23 @@ public class Message {
         this.message = message;
     }
 
-    public String getAuteur() {
+    public User getAuteur() {
         return auteur;
     }
 
-    public void setAuteur(String auteur) {
+    public void setAuteur(User auteur) {
         this.auteur = auteur;
     }
 
-    public String getDestinataire() {
+    public User getDestinataire() {
         return destinataire;
     }
 
-    public void setDestinataire(String destinataire) {
+    public void setDestinataire(User destinataire) {
         this.destinataire = destinataire;
     }
+
+
 
     public Date getDate() {
         return date;

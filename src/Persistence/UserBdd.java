@@ -72,21 +72,36 @@ public class UserBdd {
         return userList;
     }
 
-    public static ArrayList<Message> getPrivateMessage(int id) throws SQLException {
+    public static ArrayList<Message> getPrivateMessage(User user) throws SQLException {
         ArrayList<Message> privateMessage = new ArrayList();
-        String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date FROM PrivateMessage pm "
-                + "join User userEnvoi on pm.idUser = userEnvoi.idUser "
+        String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date, pm.idAuteur FROM PrivateMessage pm "
+                + "join User userEnvoi on pm.idAuteur = userEnvoi.idUser "
                 + "join User userRecoi on pm.idDestinataire = userRecoi.idUser "
                 + "WHERE pm.idDestinataire = ? "
                 + "ORDER by pm.date DESC";
         PreparedStatement pss = conn.prepareStatement(req);
-        pss.setInt(1, id);
+        pss.setInt(1, user.getIdUser());
         ResultSet rs = pss.executeQuery();
         while (rs.next()) {
-            Message msg = new Message(rs.getString(3) , rs.getString(1), rs.getString(2), rs.getDate(4));
+            User destinataire = findUserById(rs.getInt(5));            
+            Message msg = new Message(rs.getString(3), destinataire, user, rs.getDate(4));
             privateMessage.add(msg);
         }
         return privateMessage;
+    }
+
+    public static User findUserById(int id) throws SQLException {
+        try {
+            String req = "SELECT idUser, pseudo, mail FROM User WHERE iduser = ?";
+            PreparedStatement pss = conn.prepareStatement(req);
+            pss.setInt(1, id);
+            ResultSet rs = pss.executeQuery();
+            rs.next();
+            User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static User getUser(String pseudo, String pwd) throws SQLException, NoSuchAlgorithmException {
@@ -148,14 +163,14 @@ public class UserBdd {
     }
 
     public static void addFriend(User user, Friend friend) throws SQLException {
-        String req = "INSERT INTO Friend (idFriend, idUser) values (?, ?) "; 
+        String req = "INSERT INTO Friend (idFriend, idUser) values (?, ?) ";
         PreparedStatement pss = conn.prepareStatement(req);
         pss.setInt(1, friend.getIdFriend());
         pss.setInt(2, user.getIdUser());
         pss.executeUpdate();
     }
-    
+
     /*    public static void updateUser(User user) {
         
-    }*/
+     }*/
 }

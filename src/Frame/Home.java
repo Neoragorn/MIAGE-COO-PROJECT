@@ -41,6 +41,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
     private JLabel pseudo;
 
+    private String messageSelected;
+
     public Home() {
         setLayout(null);
         setPreferredSize(new Dimension(1500, 800));
@@ -58,11 +60,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         sendMessage = new JButton("Send Message");
         sendMessage.setBounds(80, 280, 200, 50);
+        sendMessage.addActionListener(this);
 
         answer = new JButton("Answer");
         answer.setBounds(80, 600, 200, 50);
         answer.addActionListener(this);
-        
+
         profile = new JButton("Profile");
         profile.setBounds(200, 10, 80, 30);
         profile.addActionListener(this);
@@ -80,8 +83,11 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         try {
             ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getPrivateMessage();
+            System.out.println(privateMsg.get(0).getMessage());
+            System.out.println(privateMsg.get(1).getMessage());
+             System.out.println(privateMsg.get(2).getMessage());
             for (Message msg : privateMsg) {
-                boiteReception.addElement("[" + msg.getDate() + "] " + msg.getAuteur() + " : " + msg.getMessage());
+                boiteReception.addElement("[" + msg.getDate() + "] " + msg.getAuteur().getPseudo() + " : " + msg.getMessage());
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -174,6 +180,9 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
         if (e.getActionCommand().equals("Profile")) {
             MyFrame.getInstance().changeFrame(new Profile());
+        }
+        if (e.getActionCommand().equals("Send Message")) {
+            MyFrame.getInstance().changeFrame(new SendMessage(friends.getSelectedIndex()));
         }
         if (e.getActionCommand().equals("Create discussion")) {
             try {
