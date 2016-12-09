@@ -3,6 +3,7 @@ package Bean;
 import Models.Friend;
 import Models.Message;
 import Models.User;
+import Persistence.MessageBdd;
 import Persistence.UserBdd;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -108,6 +109,17 @@ public class UserBean {
         try {
             UserBdd.insertUser(use);
         } catch (Exception err) {
+            System.out.println(err);
+        }
+    }
+    
+    public void sendMessage(Message message)
+    {
+        try
+        {
+            MessageBdd.insertMessage(message);
+        }
+        catch (Exception err) {
             System.out.println(err);
         }
     }

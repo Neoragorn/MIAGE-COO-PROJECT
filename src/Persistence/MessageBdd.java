@@ -19,11 +19,11 @@ public class MessageBdd {
     private static final Connection conn = PersistenceConnection.getInstance().getConn();
 
     static public void insertMessage(Message msg) throws SQLException {
-        String req = "INSERT INTO PrivateMessage (idUser, idDestinataire, message, date) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO PrivateMessage (idAuteur, idDestinataire, message, date) VALUES (?, ?, ?, ?)";
 
         PreparedStatement pss = conn.prepareStatement(req);
         pss.setInt(1, msg.getAuteur().getIdUser());
-        pss.setInt(2, msg.getDestinataire().getIdUser());
+        pss.setInt(2, msg.getDestinataire().getIdFriend());
         pss.setString(3, msg.getMessage());
         pss.setDate(4, msg.getDate());
         pss.executeUpdate();

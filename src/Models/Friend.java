@@ -18,6 +18,12 @@ public class Friend {
     public Friend() {
     }
 
+     public Friend(int id, String pseudo, String mail) {
+         this.idFriend = id;
+         this.pseudo = pseudo;
+    	this.mail = mail;	
+    }
+     
     public Friend(String pseudo, String mail) {
     	this.pseudo = pseudo;
     	this.mail = mail;	

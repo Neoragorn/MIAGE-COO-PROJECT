@@ -41,7 +41,6 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
     private JLabel pseudo;
 
-    private String messageSelected;
 
     public Home() {
         setLayout(null);
@@ -83,9 +82,9 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         try {
             ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getPrivateMessage();
-            System.out.println(privateMsg.get(0).getMessage());
-            System.out.println(privateMsg.get(1).getMessage());
-             System.out.println(privateMsg.get(2).getMessage());
+           // System.out.println(privateMsg.get(0).getMessage());
+            //System.out.println(privateMsg.get(1).getMessage());
+             //System.out.println(privateMsg.get(2).getMessage());
             for (Message msg : privateMsg) {
                 boiteReception.addElement("[" + msg.getDate() + "] " + msg.getAuteur().getPseudo() + " : " + msg.getMessage());
             }

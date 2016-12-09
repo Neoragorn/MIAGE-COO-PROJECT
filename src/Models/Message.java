@@ -15,10 +15,10 @@ public class Message {
 
     private String message;
     private User auteur;
-    private User destinataire;
+    private Friend destinataire;
     private Date date;
 
-    public Message(String message, User auteur, User destinataire, Date date) {
+    public Message(String message, User auteur, Friend destinataire, Date date) {
         this.message = message;
         this.auteur = auteur;
         this.destinataire = destinataire;
@@ -41,11 +41,11 @@ public class Message {
         this.auteur = auteur;
     }
 
-    public User getDestinataire() {
+    public Friend getDestinataire() {
         return destinataire;
     }
 
-    public void setDestinataire(User destinataire) {
+    public void setDestinataire(Friend destinataire) {
         this.destinataire = destinataire;
     }
 

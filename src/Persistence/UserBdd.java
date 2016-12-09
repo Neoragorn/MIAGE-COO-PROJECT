@@ -83,11 +83,25 @@ public class UserBdd {
         pss.setInt(1, user.getIdUser());
         ResultSet rs = pss.executeQuery();
         while (rs.next()) {
-            User destinataire = findUserById(rs.getInt(5));            
-            Message msg = new Message(rs.getString(3), destinataire, user, rs.getDate(4));
+            Friend destinataire = findFriendById(rs.getInt(5));
+            Message msg = new Message(rs.getString(3), user, destinataire, rs.getDate(4));
             privateMessage.add(msg);
         }
         return privateMessage;
+    }
+
+    public static Friend findFriendById(int id) throws SQLException {
+        try {
+            String req = "SELECT idUser, pseudo, mail FROM User WHERE iduser = ?";
+            PreparedStatement pss = conn.prepareStatement(req);
+            pss.setInt(1, id);
+            ResultSet rs = pss.executeQuery();
+            rs.next();
+            Friend friend = new Friend(rs.getInt(1), rs.getString(2), rs.getString(3));
+            return friend;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static User findUserById(int id) throws SQLException {
