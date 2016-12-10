@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,8 +36,12 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
     private JEditorPane discussionField;
     private JList members;
     private JButton returnHome;
+    private JButton AddMessage;
+
+    private JTextField TFMessage;
 
     private JLabel discussionTitle;
+    private JLabel AddMessageLabel;
 
     public Discussion() {
         setLayout(null);
@@ -49,9 +54,20 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         discussionTitle.setOpaque(true);
         discussionTitle.setBounds(40, 10, 300, 20);
 
+        AddMessageLabel = new JLabel("Ajouter un message");
+        AddMessageLabel.setOpaque(true);
+        AddMessageLabel.setBounds(190, 680, 300, 20);
+
+        TFMessage = new JTextField();
+        TFMessage.setBounds(190, 700, 400, 60);
+
         returnHome = new JButton("Return");
         returnHome.setBounds(30, 700, 100, 50);
         returnHome.addActionListener(this);
+
+        AddMessage = new JButton("Add Message");
+        AddMessage.setBounds(600, 700, 200, 50);
+        AddMessage.addActionListener(this);
 
         listMembers = new DefaultListModel();
         try {
@@ -86,11 +102,14 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         JScrollPane scrollMembers = new JScrollPane(members);
         scrollMembers.setBounds(1000, 50, 500, 600);
 
+        p1.add(AddMessageLabel);
+        p1.add(AddMessage);
         p1.add(discussionField);
         p1.setBounds(0, 0, 1600, 800);
         p1.add(returnHome);
         p1.add(scrollMembers);
         p1.add(discussionTitle);
+        p1.add(TFMessage);
         add(p1);
     }
 
