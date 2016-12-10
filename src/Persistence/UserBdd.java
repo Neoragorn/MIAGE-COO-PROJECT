@@ -90,7 +90,25 @@ public class UserBdd {
         return privateMessage;
     }
 
-    public static Friend findFriendById(int id) throws SQLException {
+        public static ArrayList<Message> getPrivateMessageById(int id) throws SQLException {
+        ArrayList<Message> privateMessage = new ArrayList();
+        String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date, pm.idAuteur FROM PrivateMessage pm "
+                + "join User userEnvoi on pm.idAuteur = userEnvoi.idUser "
+                + "join User userRecoi on pm.idDestinataire = userRecoi.idUser "
+                + "WHERE pm.idDestinataire = ? "
+                + "ORDER by pm.date DESC";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, id);
+        ResultSet rs = pss.executeQuery();
+        while (rs.next()) {
+            Friend destinataire = findFriendById(rs.getInt(5));
+            Message msg = new Message(rs.getString(3), UserBean.getInstance().getUser(), destinataire, rs.getDate(4));
+            privateMessage.add(msg);
+        }
+        return privateMessage;
+    }
+
+        public static Friend findFriendById(int id) throws SQLException {
         try {
             String req = "SELECT idUser, pseudo, mail FROM User WHERE iduser = ?";
             PreparedStatement pss = conn.prepareStatement(req);

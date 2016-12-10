@@ -5,6 +5,7 @@ import Models.Message;
 import Models.User;
 import Persistence.MessageBdd;
 import Persistence.UserBdd;
+import Persistence.UserMessageVirtualProxy;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -69,11 +70,10 @@ public class UserBean {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
             if (user != null) {
+                user.setProxyMessage(new UserMessageVirtualProxy(user.getIdUser()));
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
-                ArrayList<Message> msg = UserBdd.getPrivateMessage(user);
                 user.setFriends(friend);
-                user.setPrivateMessage(msg);
-                this.connected = true;
+                 this.connected = true;
                 this.user = user;
                 System.out.println("You are connected!");
                 return true;

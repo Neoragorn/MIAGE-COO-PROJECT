@@ -90,7 +90,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         manage.addActionListener(this);
 
         try {
-            ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getPrivateMessage();
+            ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getProxyMessage().initialize();
             for (Message msg : privateMsg) {
                 boiteReception.addElement("[" + msg.getDate() + "] " + msg.getDestinataire().getPseudo() + " : " + msg.getMessage());
             }

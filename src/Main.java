@@ -29,22 +29,22 @@ public class Main {
 
     public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
-        PersistenceConnection co = new PersistenceConnection();        
+        PersistenceConnection co = new PersistenceConnection();
         try {
             co.startConnection("casier", "C&?1+mur");
         } catch (Exception e) {
             System.out.println(e);
         }
         //creation de l'admin si besoin
-       /* User admin = new Admin("admin", "admin", "admin@admin.com"); 
+        /* User admin = new Admin("admin", "admin", "admin@admin.com"); 
 		UserBdd.insertUser(admin);
 		System.out.println("admin created"); */
         MyFrame myF = new MyFrame();
-        MyFrame.setInst(myF);        
+        MyFrame.setInst(myF);
         JPanel jp = new ChoixConnection();
         MyFrame.getInstance().setActualPanel(jp);
         //Ecran pour soit se connecter, soit s'inscrire
         myF.startPoint(jp);
-       
+
     }
 }

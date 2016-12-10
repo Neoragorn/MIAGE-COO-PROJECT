@@ -1,5 +1,6 @@
 package Models;
 
+import Persistence.UserMessageVirtualProxy;
 import java.awt.List;
 import java.util.ArrayList;
 
@@ -10,18 +11,24 @@ public class User {
     protected String pwd;
     protected int idUser;
     protected ArrayList<Friend> friends = new ArrayList();
-    protected ArrayList<Message> privateMessage = new ArrayList();
-    
+    protected UserMessageVirtualProxy proxyMessage;
 
     public User() {
 
     }
 
-    
     public User(int id, String pseudo, String mail) {
         this.idUser = id;
         this.pseudo = pseudo;
         this.mail = mail;
+        this.proxyMessage = new UserMessageVirtualProxy(id);
+    }
+
+    public User(int id, String pseudo, String pwd, String mail) {
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.pwd = pwd;
+        this.proxyMessage = new UserMessageVirtualProxy(id);
     }
 
     public User(String pseudo, String pwd, String mail) {
@@ -70,14 +77,13 @@ public class User {
         this.idUser = idUser;
     }
 
-    public ArrayList<Message> getPrivateMessage() {
-        return privateMessage;
+    public UserMessageVirtualProxy getProxyMessage() {
+        return proxyMessage;
     }
 
-    public void setPrivateMessage(ArrayList<Message> privateMessage) {
-        this.privateMessage = privateMessage;
+    public void setProxyMessage(UserMessageVirtualProxy proxyMessage) {
+        this.proxyMessage = proxyMessage;
     }
-
     
     @Override
     public String toString() {
