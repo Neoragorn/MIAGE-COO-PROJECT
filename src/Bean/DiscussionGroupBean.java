@@ -17,11 +17,22 @@ import java.util.ArrayList;
  */
 public class DiscussionGroupBean {
 
+    private DiscussionGroup discussion;
+    
+      public static DiscussionGroupBean inst;
+
+    static public DiscussionGroupBean getInstance() {
+        if (inst == null) {
+            inst = new DiscussionGroupBean();
+        }
+        return inst;
+    }
+    
     public static void createDiscussion(User user, String title, String description) throws SQLException {
         DiscussionGroupBdd.createDiscussionGroupBdd(user.getIdUser(), title, description);
     }
 
-    public static ArrayList<DiscussionGroup> getDiscussionGroups() throws SQLException {
+    public ArrayList<DiscussionGroup> getDiscussionGroups() throws SQLException {
         try {
             return DiscussionGroupBdd.getDiscussionGroupBdd();
         } catch (Exception e) {
@@ -29,4 +40,14 @@ public class DiscussionGroupBean {
         }
         return null;
     }
+
+    public DiscussionGroup getDiscussion() {
+        return discussion;
+    }
+
+    public void setDiscussion(DiscussionGroup discussion) {
+        this.discussion = discussion;
+    }
+    
+    
 }

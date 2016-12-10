@@ -5,24 +5,33 @@
  */
 package Models;
 
+import Persistence.UserDiscussionGroupVirtualProxy;
+
 /**
  *
  * @author sofian
  */
 public class DiscussionGroup {
 
+    private int idDiscussion;
     private String title;
     private String description;
-    
-    public DiscussionGroup()
-    {
-        
+    private UserDiscussionGroupVirtualProxy members;
+
+    public DiscussionGroup(int id, String title, String description) {
+        this.idDiscussion = id;
+        this.title = title;
+        this.description = description;
+        this.members = new UserDiscussionGroupVirtualProxy(id);
     }
 
-        public DiscussionGroup(String title, String description)
-    {
+    public DiscussionGroup() {
+
+    }
+
+    public DiscussionGroup(String title, String description) {
         this.title = title;
-        this.description = description;        
+        this.description = description;
     }
 
     public String getTitle() {
@@ -40,6 +49,21 @@ public class DiscussionGroup {
     public void setDescription(String description) {
         this.description = description;
     }
-        
-        
+
+    public int getIdDiscussion() {
+        return idDiscussion;
+    }
+
+    public void setIdDiscussion(int idDiscussion) {
+        this.idDiscussion = idDiscussion;
+    }
+
+    public UserDiscussionGroupVirtualProxy getMembers() {
+        return members;
+    }
+
+    public void setMembers(UserDiscussionGroupVirtualProxy members) {
+        this.members = members;
+    }
+
 }
