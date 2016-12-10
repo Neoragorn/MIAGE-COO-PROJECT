@@ -49,5 +49,4 @@ public class DiscussionGroupBean {
         this.discussion = discussion;
     }
     
-    
 }

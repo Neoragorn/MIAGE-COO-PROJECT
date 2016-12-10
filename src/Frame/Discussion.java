@@ -6,18 +6,23 @@
 package Frame;
 
 import Bean.DiscussionGroupBean;
+import Models.MessageDiscussion;
 import Models.User;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.Document;
 
 /**
  *
@@ -26,7 +31,12 @@ import javax.swing.event.ListSelectionListener;
 public class Discussion extends JPanel implements ActionListener, ListSelectionListener {
 
     private DefaultListModel listMembers;
+
+    private JEditorPane discussionField;
     private JList members;
+    private JButton returnHome;
+
+    private JLabel discussionTitle;
 
     public Discussion() {
         setLayout(null);
@@ -34,6 +44,14 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);
+
+        discussionTitle = new JLabel(DiscussionGroupBean.getInstance().getDiscussion().getTitle());
+        discussionTitle.setOpaque(true);
+        discussionTitle.setBounds(40, 10, 300, 20);
+
+        returnHome = new JButton("Return");
+        returnHome.setBounds(30, 700, 100, 50);
+        returnHome.addActionListener(this);
 
         listMembers = new DefaultListModel();
         try {
@@ -51,11 +69,28 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         members.addListSelectionListener(this);
         members.setVisibleRowCount(5);
 
+        discussionField = new JEditorPane();
+        discussionField.setBounds(30, 50, 800, 600);
+
+        try {
+            Document doc = discussionField.getDocument();
+            ArrayList<MessageDiscussion> msgList = DiscussionGroupBean.getInstance().getDiscussion().getMessagesProxy().getMessages();
+            for (MessageDiscussion msg : msgList) {
+                doc.insertString(doc.getLength(), "[" + msg.getTime() + "] " + msg.getAuteur() + ": " + msg.getMessage() + "\n", null);
+
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         JScrollPane scrollMembers = new JScrollPane(members);
         scrollMembers.setBounds(1000, 50, 500, 600);
 
+        p1.add(discussionField);
         p1.setBounds(0, 0, 1600, 800);
+        p1.add(returnHome);
         p1.add(scrollMembers);
+        p1.add(discussionTitle);
         add(p1);
     }
 
@@ -66,6 +101,12 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
     }
 
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getActionCommand().equals("Return")) {
+            try {
+                MyFrame.getInstance().changeFrame(new Home());
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
  */
 package Persistence;
 
-import Models.Message;
+import Models.DiscussionGroup;
 import Models.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author sofian
  */
-public class UserDiscussionGroupVirtualProxy extends ArrayList<Message> {
+public class UserDiscussionGroupVirtualProxy extends ArrayList<DiscussionGroup> {
 
     int id;
     ArrayList<User> users = new ArrayList();

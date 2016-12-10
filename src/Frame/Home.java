@@ -5,6 +5,8 @@ import Bean.UserBean;
 import Models.DiscussionGroup;
 import Models.Friend;
 import Models.Message;
+import Models.MessageDiscussion;
+import Persistence.MessageDiscussionGroupVirtualProxy;
 import Persistence.UserDiscussionGroupVirtualProxy;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -221,12 +223,18 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
         if (e.getActionCommand().equals("Join discussion")) {
             try {
-                System.out.println("entered the condition");
                 DiscussionGroup discu = DiscussionGroupBean.getInstance().getDiscussionGroups().get(discussionGroup.getSelectedIndex());
                 discu.setMembers(new UserDiscussionGroupVirtualProxy(discu.getIdDiscussion()));
                 discu.getMembers().initialize();
+                MessageDiscussionGroupVirtualProxy msgProxy = new MessageDiscussionGroupVirtualProxy();
+                msgProxy.initialize(discu);
+                discu.setMessagesProxy(msgProxy);
+                for (MessageDiscussion msg : discu.getMessagesProxy().getMessages())
+                {
+                    System.out.println("and after is " + msg.getMessage());
+                }
                 DiscussionGroupBean.getInstance().setDiscussion(discu);
-                 MyFrame.getInstance().changeFrame(new Discussion());
+                MyFrame.getInstance().changeFrame(new Discussion());
             } catch (Exception err) {
                 System.out.println(err);
             }

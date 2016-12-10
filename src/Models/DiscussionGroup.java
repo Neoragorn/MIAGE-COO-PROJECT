@@ -5,6 +5,7 @@
  */
 package Models;
 
+import Persistence.MessageDiscussionGroupVirtualProxy;
 import Persistence.UserDiscussionGroupVirtualProxy;
 
 /**
@@ -17,12 +18,14 @@ public class DiscussionGroup {
     private String title;
     private String description;
     private UserDiscussionGroupVirtualProxy members;
-
+    private MessageDiscussionGroupVirtualProxy messagesProxy;
+    
     public DiscussionGroup(int id, String title, String description) {
         this.idDiscussion = id;
         this.title = title;
         this.description = description;
         this.members = new UserDiscussionGroupVirtualProxy(id);
+        this.messagesProxy = new MessageDiscussionGroupVirtualProxy();
     }
 
     public DiscussionGroup() {
@@ -33,6 +36,16 @@ public class DiscussionGroup {
         this.title = title;
         this.description = description;
     }
+
+    public MessageDiscussionGroupVirtualProxy getMessagesProxy() {
+        return messagesProxy;
+    }
+
+    public void setMessagesProxy(MessageDiscussionGroupVirtualProxy messagesProxy) {
+        this.messagesProxy = messagesProxy;
+    }
+
+    
 
     public String getTitle() {
         return title;
