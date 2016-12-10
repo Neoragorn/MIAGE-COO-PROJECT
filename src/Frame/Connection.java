@@ -55,6 +55,7 @@ public class Connection extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("Connect")) {
             Pseudo = TFPseudo.getText();
             Password = TFPassword.getText();
+//            System.out.println(Pseudo +  "   "  + Password);
             if (UserBean.getInstance().connectUser(Pseudo, Password)) {
                 Home home = new Home();
                 MyFrame.getInstance().getFrame().dispose();

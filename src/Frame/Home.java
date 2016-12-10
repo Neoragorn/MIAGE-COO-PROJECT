@@ -40,11 +40,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JList privateMessage;
 
     private JLabel pseudo;
-
+    private JLabel reception;
+    private JLabel yourFriends;
 
     public Home() {
         setLayout(null);
-        setPreferredSize(new Dimension(1500, 800));
+        setPreferredSize(new Dimension(1600, 800));
 
         JPanel p1 = new JPanel();
         p1.setLayout(null);
@@ -52,17 +53,25 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
         pseudo.setOpaque(true);
-        pseudo.setBounds(20, 10, 100, 20);
+        pseudo.setBounds(20, 10, 150, 20);
+
+        yourFriends = new JLabel("Your Friends");
+        yourFriends.setOpaque(true);
+        yourFriends.setBounds(70, 70, 100, 20);
+
+        reception = new JLabel("Your private messages");
+        reception.setOpaque(true);
+        reception.setBounds(70, 380, 200, 20);
 
         quitter = new JButton("Quit");
         quitter.setBounds(100, 700, 100, 50);
 
         sendMessage = new JButton("Send Message");
-        sendMessage.setBounds(80, 280, 200, 50);
+        sendMessage.setBounds(80, 310, 200, 50);
         sendMessage.addActionListener(this);
 
         answer = new JButton("Answer");
-        answer.setBounds(80, 600, 200, 50);
+        answer.setBounds(80, 620, 200, 50);
         answer.addActionListener(this);
 
         profile = new JButton("Profile");
@@ -82,11 +91,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
         try {
             ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getPrivateMessage();
-           // System.out.println(privateMsg.get(0).getMessage());
-            //System.out.println(privateMsg.get(1).getMessage());
-             //System.out.println(privateMsg.get(2).getMessage());
             for (Message msg : privateMsg) {
-                boiteReception.addElement("[" + msg.getDate() + "] " + msg.getAuteur().getPseudo() + " : " + msg.getMessage());
+                boiteReception.addElement("[" + msg.getDate() + "] " + msg.getDestinataire().getPseudo() + " : " + msg.getMessage());
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -131,13 +137,15 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         scrollDiscussion.setBounds(650, 10, 1000, 600);
 
         JScrollPane scrollFriend = new JScrollPane(friends);
-        scrollFriend.setBounds(50, 50, 500, 200);
+        scrollFriend.setBounds(50, 100, 500, 200);
 
         JScrollPane scrollPrivateMessage = new JScrollPane(privateMessage);
-        scrollPrivateMessage.setBounds(50, 350, 500, 200);
+        scrollPrivateMessage.setBounds(50, 410, 500, 200);
 
         quitter.addActionListener(this);
 
+        add(yourFriends);
+        add(reception);
         add(scrollPrivateMessage);
         add(pseudo);
         add(answer);
@@ -157,14 +165,17 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
 
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
-
-            if (discussionGroup.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
-//                fireButton.setEnabled(false);
+            if (friends.getSelectedIndex() == -1) {
+                sendMessage.setEnabled(false);
 
             } else {
-                //Selection, enable the fire button.
-                //              fireButton.setEnabled(true);
+                sendMessage.setEnabled(true);
+            }
+            if (privateMessage.getSelectedIndex() == -1) {
+               answer.setEnabled(false);
+
+            } else {
+                answer.setEnabled(true);
             }
         }
     }
@@ -183,9 +194,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         if (e.getActionCommand().equals("Send Message")) {
             MyFrame.getInstance().changeFrame(new SendMessage(friends.getSelectedIndex()));
         }
+        if (e.getActionCommand().equals("Answer")) {
+            MyFrame.getInstance().changeFrame(new AnswerMessage(privateMessage.getSelectedIndex()));
+        }
         if (e.getActionCommand().equals("Create discussion")) {
             try {
-                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe", "premier description");
+//                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), "premier test de groupe", "premier description");
                 MyFrame.getInstance().getFrame().setVisible(false);
                 MyFrame createDiscussion = new MyFrame("Create Discussion");
                 MyFrame.getInstance().setSecondMyFrame(createDiscussion);

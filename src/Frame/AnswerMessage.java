@@ -19,9 +19,9 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author casier
+ * @author sofian
  */
-public class SendMessage extends JPanel implements ActionListener {
+public class AnswerMessage  extends JPanel implements ActionListener {
 
     private JButton returnHome;
     private JButton sendMessage;
@@ -30,7 +30,7 @@ public class SendMessage extends JPanel implements ActionListener {
     private Friend destinataire;
     private JLabel pseudoDestinataire;
 
-    public SendMessage(int index) {
+    public AnswerMessage(int index) {
         setLayout(null);
         setPreferredSize(new Dimension(500, 400));
 
@@ -49,7 +49,7 @@ public class SendMessage extends JPanel implements ActionListener {
         sendMessage.setBounds(200, 210, 150, 50);
         sendMessage.addActionListener(this);
 
-        pseudoDestinataire = new JLabel("Envoyer un message à " + destinataire.getPseudo());
+        pseudoDestinataire = new JLabel("Répondre à " + destinataire.getPseudo());
         pseudoDestinataire.setOpaque(true);
         pseudoDestinataire.setBounds(20, 10, 300, 20);
 
@@ -64,10 +64,8 @@ public class SendMessage extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Send Message")) {
             this.message = messageToSend.getText();
-            java.util.Date d1 = new java.util.Date();
-            java.sql.Date d2 = new java.sql.Date(d1.getTime());
-
-            Message msg = new Message(message, UserBean.getInstance().getUser(), destinataire, d2);
+            Date date = new Date(0);
+            Message msg = new Message(message, UserBean.getInstance().getUser(), destinataire, date);
             UserBean.getInstance().sendMessage(msg);
             MyFrame.getInstance().changeFrame(new Home());
         }

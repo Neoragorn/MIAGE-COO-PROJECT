@@ -140,7 +140,7 @@ public class UserBdd {
             return user;
         } catch (SQLException | NoSuchAlgorithmException e) {
             if (e instanceof SQLException) {
-                System.out.println("Erreur dans le login et/ou le mot de passe");
+                System.out.println("Erreur dans le login et/ou le mot de passe" + e);
                 return null;
             } else {
                 e.printStackTrace();

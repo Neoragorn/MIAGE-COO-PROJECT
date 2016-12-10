@@ -21,7 +21,7 @@ public class UserBean {
 
     private User user = null;
     private boolean connected = false;
-    
+
     public UserBean() {
 
     }
@@ -57,14 +57,14 @@ public class UserBean {
         }
     }
 
-     public void addFriend(User user) throws SQLException {
-    	 Friend f = new Friend();
-    	 f.setIdFriend(user.getIdUser());
-    	 f.setPseudo(user.getPseudo());
-    	 f.setMail(user.getMail());
-    	 UserBdd.addFriend(this.user, f);
+    public void addFriend(User user) throws SQLException {
+        Friend f = new Friend();
+        f.setIdFriend(user.getIdUser());
+        f.setPseudo(user.getPseudo());
+        f.setMail(user.getMail());
+        UserBdd.addFriend(this.user, f);
     }
-     
+
     public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
@@ -72,7 +72,7 @@ public class UserBean {
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
                 ArrayList<Message> msg = UserBdd.getPrivateMessage(user);
                 user.setFriends(friend);
-                user.setPrivateMessage(msg);                
+                user.setPrivateMessage(msg);
                 this.connected = true;
                 this.user = user;
                 System.out.println("You are connected!");
@@ -112,14 +112,11 @@ public class UserBean {
             System.out.println(err);
         }
     }
-    
-    public void sendMessage(Message message)
-    {
-        try
-        {
+
+    public void sendMessage(Message message) {
+        try {
             MessageBdd.insertMessage(message);
-        }
-        catch (Exception err) {
+        } catch (Exception err) {
             System.out.println(err);
         }
     }
