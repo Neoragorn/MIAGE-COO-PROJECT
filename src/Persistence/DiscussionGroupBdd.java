@@ -35,6 +35,18 @@ public class DiscussionGroupBdd {
         }
     }
 
+    public static void updateAssoGroupUser(User user, DiscussionGroup discu) throws SQLException {
+        try {
+            String req = "INSERT INTO AssoGroupUser (idUser, idGroup) VALUES (?, ?)";
+            PreparedStatement pss = conn.prepareStatement(req);
+            pss.setInt(1, user.getIdUser());
+            pss.setInt(2, discu.getIdDiscussion());
+            pss.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static ArrayList<DiscussionGroup> getDiscussionGroupBdd() throws SQLException {
         try {
             ArrayList<DiscussionGroup> discussionGroups = new ArrayList();

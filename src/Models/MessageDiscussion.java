@@ -33,6 +33,11 @@ public class MessageDiscussion {
         this.time = time;
     }
     
+   public MessageDiscussion(String message, String auteur, Date time) {
+        this.message = message;
+        this.auteur = auteur;
+        this.time = time;
+    }
 
 
     public int getIdMessage() {

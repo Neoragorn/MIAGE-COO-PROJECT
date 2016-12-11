@@ -6,8 +6,8 @@
 package Persistence;
 
 import Models.DiscussionGroup;
-import Models.Message;
 import Models.MessageDiscussion;
+import Models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +22,21 @@ public class MessageDiscussionBdd {
 
     private static final Connection conn = PersistenceConnection.getInstance().getConn();
 
+    public static void insertMessageIntoDiscussion(DiscussionGroup discussion, MessageDiscussion message, User user) {
+        try {
+            String req = "INSERT INTO Message (idGroup, idUser, message, heure) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement pss = conn.prepareStatement(req);
+            pss.setInt(1, discussion.getIdDiscussion());
+            pss.setInt(2, user.getIdUser());
+            pss.setString(3, message.getMessage());
+            pss.setDate(4, message.getTime());
+            pss.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static ArrayList<MessageDiscussion> getMessageFromDiscussion(DiscussionGroup discussion) {
         try {
             ArrayList<MessageDiscussion> msgList = new ArrayList();
@@ -33,8 +48,7 @@ public class MessageDiscussionBdd {
             PreparedStatement pss = conn.prepareStatement(req);
             pss.setInt(1, discussion.getIdDiscussion());
             ResultSet rs = pss.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 MessageDiscussion msg = new MessageDiscussion(rs.getInt(1), rs.getString(3), rs.getString(2), rs.getDate(4));
                 msgList.add(msg);
             }

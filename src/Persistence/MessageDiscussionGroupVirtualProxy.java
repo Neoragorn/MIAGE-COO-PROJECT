@@ -29,6 +29,10 @@ public class MessageDiscussionGroupVirtualProxy extends ArrayList<MessageDiscuss
         return this.messages;
     }
 
+    public void updateMessage(DiscussionGroup discussion) throws SQLException {
+        this.messages = MessageDiscussionBdd.getMessageFromDiscussion(discussion);
+    }
+
     public ArrayList<MessageDiscussion> getMessages() {
         return messages;
     }

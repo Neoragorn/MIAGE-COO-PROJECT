@@ -6,11 +6,13 @@
 package Frame;
 
 import Bean.DiscussionGroupBean;
+import Bean.UserBean;
 import Models.MessageDiscussion;
 import Models.User;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -123,6 +125,19 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         if (e.getActionCommand().equals("Return")) {
             try {
                 MyFrame.getInstance().changeFrame(new Home());
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+        }
+        if (e.getActionCommand().equals("Add Message")) {
+            try {
+                String messageToAdd = TFMessage.getText();
+                java.util.Date d1 = new java.util.Date();
+                java.sql.Date d2 = new java.sql.Date(d1.getTime());
+                MessageDiscussion msg = new MessageDiscussion(messageToAdd, UserBean.getInstance().getUser().getPseudo(), d2);
+                DiscussionGroupBean.getInstance().addMessageToDiscussion(DiscussionGroupBean.getInstance().getDiscussion(), msg, UserBean.getInstance().getUser());
+                DiscussionGroupBean.getInstance().getDiscussion().getMessagesProxy().updateMessage(DiscussionGroupBean.getInstance().getDiscussion());
+                MyFrame.getInstance().changeFrame(new Discussion());
             } catch (Exception err) {
                 System.out.println(err);
             }

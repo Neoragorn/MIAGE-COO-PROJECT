@@ -65,9 +65,8 @@ public class CreateDiscussion extends JPanel implements ActionListener {
             titre = TFTitre.getText();
             description = TFDescription.getText();
             try {
-                DiscussionGroupBean.createDiscussion(UserBean.getInstance().getUser(), titre, description);
+                DiscussionGroupBean.getInstance().createDiscussion(UserBean.getInstance().getUser(), titre, description);
                 MyFrame.getInstance().getSecondMyFrame().getFrame().dispose();
-//                MyFrame.getInstance().getFrame().setVisible(true);
                 MyFrame.getInstance().changeFrame(new Home());
             } catch (Exception err) {
                 System.out.println(e);

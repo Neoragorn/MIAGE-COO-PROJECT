@@ -6,8 +6,10 @@
 package Bean;
 
 import Models.DiscussionGroup;
+import Models.MessageDiscussion;
 import Models.User;
 import Persistence.DiscussionGroupBdd;
+import Persistence.MessageDiscussionBdd;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -27,8 +29,18 @@ public class DiscussionGroupBean {
         }
         return inst;
     }
+
+    public void updateAssoUserDiscu(User user) throws SQLException
+    {
+        DiscussionGroupBdd.updateAssoGroupUser(user, discussion);
+    }
     
-    public static void createDiscussion(User user, String title, String description) throws SQLException {
+    public void addMessageToDiscussion(DiscussionGroup discussion, MessageDiscussion message, User user) throws SQLException
+    {
+        MessageDiscussionBdd.insertMessageIntoDiscussion(discussion, message, user);
+    }
+    
+    public void createDiscussion(User user, String title, String description) throws SQLException {
         DiscussionGroupBdd.createDiscussionGroupBdd(user.getIdUser(), title, description);
     }
 

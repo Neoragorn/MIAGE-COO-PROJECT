@@ -229,11 +229,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
                 MessageDiscussionGroupVirtualProxy msgProxy = new MessageDiscussionGroupVirtualProxy();
                 msgProxy.initialize(discu);
                 discu.setMessagesProxy(msgProxy);
-                for (MessageDiscussion msg : discu.getMessagesProxy().getMessages())
-                {
-                    System.out.println("and after is " + msg.getMessage());
-                }
                 DiscussionGroupBean.getInstance().setDiscussion(discu);
+                DiscussionGroupBean.getInstance().updateAssoUserDiscu(UserBean.getInstance().getUser());
                 MyFrame.getInstance().changeFrame(new Discussion());
             } catch (Exception err) {
                 System.out.println(err);
