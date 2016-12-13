@@ -35,18 +35,23 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton answer;
     private JButton manage;
     private JButton joinDiscussion;
+    private JButton joinNewDiscussion;
 
-    private DefaultListModel listDiscussion;
+    private DefaultListModel listJoinedDiscussion;
+    private DefaultListModel listNotJoinedDiscussion;
     private DefaultListModel listFriend;
     private DefaultListModel boiteReception;
 
-    private JList discussionGroup;
+    private JList joinedDiscussionGroup;
+    private JList notJoinedDiscussionGroup;
     private JList friends;
     private JList privateMessage;
 
     private JLabel pseudo;
     private JLabel reception;
     private JLabel yourFriends;
+    private JLabel joinNewDiscussionGroup;
+    private JLabel yourDiscussionGroup;
 
     public void displayButtonAndInformation() {
         pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
@@ -56,6 +61,14 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         yourFriends = new JLabel("Your Friends");
         yourFriends.setOpaque(true);
         yourFriends.setBounds(70, 70, 100, 20);
+
+        joinNewDiscussionGroup = new JLabel("Join a new Discussion Group");
+        joinNewDiscussionGroup.setOpaque(true);
+        joinNewDiscussionGroup.setBounds(640, 10, 300, 20);
+
+        yourDiscussionGroup = new JLabel("Your Discussion Group");
+        yourDiscussionGroup.setOpaque(true);
+        yourDiscussionGroup.setBounds(640, 380, 250, 20);
 
         reception = new JLabel("Your private messages");
         reception.setOpaque(true);
@@ -81,17 +94,22 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         manage.setBounds(300, 10, 80, 30);
         manage.addActionListener(this);
 
-        createDiscussion = new JButton("Create discussion");
-        createDiscussion.setBounds(1000, 650, 200, 50);
+        joinNewDiscussion = new JButton("Join New Discussion");
+        joinNewDiscussion.setBounds(700, 300, 200, 50);
+        joinNewDiscussion.addActionListener(this);
+
+        createDiscussion = new JButton("Create Discussion");
+        createDiscussion.setBounds(1000, 690, 200, 50);
         createDiscussion.addActionListener(this);
 
-        joinDiscussion = new JButton("Join discussion");
-        joinDiscussion.setBounds(700, 650, 200, 50);
+        joinDiscussion = new JButton("Join Discussion");
+        joinDiscussion.setBounds(700, 690, 200, 50);
         joinDiscussion.addActionListener(this);
     }
 
     public void displayList() {
-        listDiscussion = new DefaultListModel();
+        listJoinedDiscussion = new DefaultListModel();
+        listNotJoinedDiscussion = new DefaultListModel();
         boiteReception = new DefaultListModel();
 
         try {
@@ -104,9 +122,18 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
 
         try {
-            ArrayList<DiscussionGroup> discussionGroups = DiscussionGroupBean.getInstance().getDiscussionGroups();
-            for (DiscussionGroup discusionGroup : discussionGroups) {
-                listDiscussion.addElement("-->" + discusionGroup.getTitle() + "           ->" + discusionGroup.getDescription());
+            DiscussionGroupBean.getInstance().recoverJoinedDiscussionGroups(UserBean.getInstance().getUser());
+            for (DiscussionGroup discusionGroup : DiscussionGroupBean.getInstance().getJoinedDiscussionGroup()) {
+                listJoinedDiscussion.addElement("-->" + discusionGroup.getTitle() + "           ->" + discusionGroup.getDescription());
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        try {
+            DiscussionGroupBean.getInstance().recoverNotJoinedDiscussionGroups(UserBean.getInstance().getUser());
+            for (DiscussionGroup discusionGroup : DiscussionGroupBean.getInstance().getNotJoinedDiscussionGroup()) {
+                listNotJoinedDiscussion.addElement("-->" + discusionGroup.getTitle() + "           ->" + discusionGroup.getDescription());
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -118,11 +145,17 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
             listFriend.addElement(friend.getPseudo() + "    \t\t\tMail : " + friend.getMail());
         }
 
-        discussionGroup = new JList(listDiscussion);
-        discussionGroup.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        discussionGroup.setSelectedIndex(1);
-        discussionGroup.addListSelectionListener(this);
-        discussionGroup.setVisibleRowCount(5);
+        joinedDiscussionGroup = new JList(listJoinedDiscussion);
+        joinedDiscussionGroup.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        joinedDiscussionGroup.setSelectedIndex(1);
+        joinedDiscussionGroup.addListSelectionListener(this);
+        joinedDiscussionGroup.setVisibleRowCount(5);
+
+        notJoinedDiscussionGroup = new JList(listNotJoinedDiscussion);
+        notJoinedDiscussionGroup.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        notJoinedDiscussionGroup.setSelectedIndex(1);
+        notJoinedDiscussionGroup.addListSelectionListener(this);
+        notJoinedDiscussionGroup.setVisibleRowCount(5);
 
         friends = new JList(listFriend);
         friends.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -148,9 +181,11 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         displayButtonAndInformation();
         displayList();
 
-        JScrollPane scrollDiscussion = new JScrollPane(discussionGroup);
-        scrollDiscussion.setBounds(650, 10, 900, 600);
-        scrollDiscussion.setVerticalScrollBar(new JScrollBar(SwingConstants.VERTICAL));
+        JScrollPane scrollDiscussion = new JScrollPane(joinedDiscussionGroup);
+        scrollDiscussion.setBounds(650, 400, 800, 250);
+
+        JScrollPane scrollNotJoinedDiscussion = new JScrollPane(notJoinedDiscussionGroup);
+        scrollNotJoinedDiscussion.setBounds(650, 40, 800, 250);
 
         JScrollPane scrollFriend = new JScrollPane(friends);
         scrollFriend.setBounds(50, 100, 500, 200);
@@ -161,15 +196,19 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(yourFriends);
         add(reception);
         add(scrollPrivateMessage);
+        add(scrollNotJoinedDiscussion);
         add(pseudo);
         add(answer);
         add(scrollDiscussion);
         add(scrollFriend);
         add(sendMessage);
         add(quitter);
+        add(yourDiscussionGroup);
+        add(joinNewDiscussion);
         add(profile);
         add(createDiscussion);
         add(joinDiscussion);
+        add(joinNewDiscussionGroup);
         if (UserBean.getInstance().getUser().getPseudo().equals("admin")) {
             add(manage);
         }
@@ -211,7 +250,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         if (e.getActionCommand().equals("Answer")) {
             MyFrame.getInstance().changeFrame(new AnswerMessage(privateMessage.getSelectedIndex()));
         }
-        if (e.getActionCommand().equals("Create discussion")) {
+        if (e.getActionCommand().equals("Create Discussion")) {
             try {
                 MyFrame.getInstance().getFrame().setVisible(false);
                 MyFrame createDiscussion = new MyFrame("Create Discussion");
@@ -221,21 +260,46 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
                 System.out.println(err);
             }
         }
-        if (e.getActionCommand().equals("Join discussion")) {
+        if (e.getActionCommand().equals("Join Discussion")) {
             try {
-                DiscussionGroup discu = DiscussionGroupBean.getInstance().getDiscussionGroups().get(discussionGroup.getSelectedIndex());
-                discu.setMembers(new UserDiscussionGroupVirtualProxy(discu.getIdDiscussion()));
-                discu.getMembers().initialize();
-                MessageDiscussionGroupVirtualProxy msgProxy = new MessageDiscussionGroupVirtualProxy();
-                msgProxy.initialize(discu);
-                discu.setMessagesProxy(msgProxy);
-                DiscussionGroupBean.getInstance().setDiscussion(discu);
-                DiscussionGroupBean.getInstance().updateAssoUserDiscu(UserBean.getInstance().getUser());
-                MyFrame.getInstance().changeFrame(new Discussion());
+                DiscussionGroup discu = DiscussionGroupBean.getInstance().getJoinedDiscussionGroup().get(joinedDiscussionGroup.getSelectedIndex());
+                if (discu != null) {
+                    if (!discu.equals(DiscussionGroupBean.getInstance().getDiscussion())) {
+                        discu.setMembers(new UserDiscussionGroupVirtualProxy(discu.getIdDiscussion()));
+                        discu.getMembers().initialize();
+                        MessageDiscussionGroupVirtualProxy msgProxy = new MessageDiscussionGroupVirtualProxy();
+                        msgProxy.initialize(discu);
+                        discu.setMessagesProxy(msgProxy);
+                        DiscussionGroupBean.getInstance().setDiscussion(discu);
+                    }
+                    DiscussionGroupBean.getInstance().insertAssoUserDiscu(UserBean.getInstance().getUser());
+                    DiscussionGroupBean.getInstance().checkUserModerator();
+                    MyFrame.getInstance().changeFrame(new Discussion());
+                }
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+        }
+        if (e.getActionCommand().equals("Join New Discussion")) {
+            try {
+                System.out.println("entered new discussion");
+                DiscussionGroup discu = DiscussionGroupBean.getInstance().getNotJoinedDiscussionGroup().get(notJoinedDiscussionGroup.getSelectedIndex());
+                if (discu != null) {
+                    if (!discu.equals(DiscussionGroupBean.getInstance().getDiscussion())) {
+                        discu.setMembers(new UserDiscussionGroupVirtualProxy(discu.getIdDiscussion()));
+                        discu.getMembers().initialize();
+                        MessageDiscussionGroupVirtualProxy msgProxy = new MessageDiscussionGroupVirtualProxy();
+                        msgProxy.initialize(discu);
+                        discu.setMessagesProxy(msgProxy);
+                        DiscussionGroupBean.getInstance().setDiscussion(discu);
+                    }
+                    DiscussionGroupBean.getInstance().insertAssoUserDiscu(UserBean.getInstance().getUser());
+                    DiscussionGroupBean.getInstance().checkUserModerator();
+                    MyFrame.getInstance().changeFrame(new Discussion());
+                }
             } catch (Exception err) {
                 System.out.println(err);
             }
         }
     }
-
 }

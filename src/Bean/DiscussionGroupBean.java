@@ -19,9 +19,12 @@ import java.util.ArrayList;
  */
 public class DiscussionGroupBean {
 
+    private ArrayList<DiscussionGroup> notJoinedDiscussionGroup = new ArrayList();
+    private ArrayList<DiscussionGroup> joinedDiscussionGroup = new ArrayList();
     private DiscussionGroup discussion;
-    
-      public static DiscussionGroupBean inst;
+    private boolean moderator = false;
+
+    public static DiscussionGroupBean inst;
 
     static public DiscussionGroupBean getInstance() {
         if (inst == null) {
@@ -30,27 +33,58 @@ public class DiscussionGroupBean {
         return inst;
     }
 
-    public void updateAssoUserDiscu(User user) throws SQLException
-    {
-        DiscussionGroupBdd.updateAssoGroupUser(user, discussion);
+    public void checkUserModerator() throws SQLException {
+        if (this.discussion.getIdCreator() == UserBean.getInstance().getUser().getIdUser()) {
+            this.moderator = true;
+        }
     }
-    
-    public void addMessageToDiscussion(DiscussionGroup discussion, MessageDiscussion message, User user) throws SQLException
-    {
+
+    public void destroyUserFromDiscussion(User user) throws SQLException {
+        DiscussionGroupBdd.deleteUserFromDiscussionGroup(user, discussion);
+    }
+
+    public ArrayList<DiscussionGroup> getNotJoinedDiscussionGroup() {
+        return notJoinedDiscussionGroup;
+    }
+
+    public boolean isModerator() {
+        return moderator;
+    }
+
+    public void setModerator(boolean moderator) {
+        this.moderator = moderator;
+    }
+
+    public void insertAssoUserDiscu(User user) throws SQLException {
+        DiscussionGroupBdd.insertAssoGroupUser(user, discussion);
+    }
+
+    public void addMessageToDiscussion(DiscussionGroup discussion, MessageDiscussion message, User user) throws SQLException {
         MessageDiscussionBdd.insertMessageIntoDiscussion(discussion, message, user);
     }
-    
+
     public void createDiscussion(User user, String title, String description) throws SQLException {
         DiscussionGroupBdd.createDiscussionGroupBdd(user.getIdUser(), title, description);
     }
 
-    public ArrayList<DiscussionGroup> getDiscussionGroups() throws SQLException {
+    public void recoverNotJoinedDiscussionGroups(User user) throws SQLException {
         try {
-            return DiscussionGroupBdd.getDiscussionGroupBdd();
+            this.notJoinedDiscussionGroup = DiscussionGroupBdd.getNotJoinedDiscussionGroupBdd(user);
         } catch (Exception e) {
             System.out.println(e);
         }
-        return null;
+    }
+
+    public void recoverJoinedDiscussionGroups(User user) throws SQLException {
+        try {
+            this.joinedDiscussionGroup = DiscussionGroupBdd.getJoinedDiscussionGroupBdd(user);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public boolean getModerator() {
+        return moderator;
     }
 
     public DiscussionGroup getDiscussion() {
@@ -60,5 +94,14 @@ public class DiscussionGroupBean {
     public void setDiscussion(DiscussionGroup discussion) {
         this.discussion = discussion;
     }
+
+    public ArrayList<DiscussionGroup> getJoinedDiscussionGroup() {
+        return joinedDiscussionGroup;
+    }
+
+    public void setJoinedDiscussionGroup(ArrayList<DiscussionGroup> joinedDiscussionGroup) {
+        this.joinedDiscussionGroup = joinedDiscussionGroup;
+    }
+
     
 }

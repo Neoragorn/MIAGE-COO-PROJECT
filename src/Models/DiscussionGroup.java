@@ -15,13 +15,15 @@ import Persistence.UserDiscussionGroupVirtualProxy;
 public class DiscussionGroup {
 
     private int idDiscussion;
+    private int idCreator;
     private String title;
     private String description;
     private UserDiscussionGroupVirtualProxy members;
     private MessageDiscussionGroupVirtualProxy messagesProxy;
     
-    public DiscussionGroup(int id, String title, String description) {
+    public DiscussionGroup(int id, int idCreator, String title, String description) {
         this.idDiscussion = id;
+        this.idCreator = idCreator;
         this.title = title;
         this.description = description;
         this.members = new UserDiscussionGroupVirtualProxy(id);
@@ -45,8 +47,15 @@ public class DiscussionGroup {
         this.messagesProxy = messagesProxy;
     }
 
-    
+    public int getIdCreator() {
+        return idCreator;
+    }
 
+    public void setIdCreator(int idCreator) {
+        this.idCreator = idCreator;
+    }
+
+    
     public String getTitle() {
         return title;
     }
