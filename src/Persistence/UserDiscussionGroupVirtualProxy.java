@@ -27,8 +27,7 @@ public class UserDiscussionGroupVirtualProxy extends ArrayList<DiscussionGroup> 
     {
         if (users.isEmpty())
         {
-            System.out.println(id);
-            users = DiscussionGroupBdd.getDiscussionGroupUserById(id);
+             users = DiscussionGroupBdd.getDiscussionGroupUserById(id);
         }
         return users;
     }

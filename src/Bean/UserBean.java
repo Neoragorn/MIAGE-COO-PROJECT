@@ -1,10 +1,13 @@
 package Bean;
 
+import Models.Category;
 import Models.Friend;
 import Models.Message;
 import Models.User;
+import Persistence.CategoryBdd;
 import Persistence.MessageBdd;
 import Persistence.UserBdd;
+import Persistence.UserCategoryVirtualProxy;
 import Persistence.UserMessageVirtualProxy;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -23,6 +26,7 @@ public class UserBean {
 
     private User user = null;
     private ArrayList<User> searchedListUser = new ArrayList();
+    private ArrayList<Category> allCategoriesExceptUser = new ArrayList();
     private boolean connected = false;
 
     public UserBean() {
@@ -45,6 +49,14 @@ public class UserBean {
         } catch (Exception e) {
             System.out.println(e);
             return null;
+        }
+    }
+
+    public void getAllNotUserCategories() {
+        try {
+            this.allCategoriesExceptUser = CategoryBdd.getAllCategoryExceptUser(user);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -73,6 +85,7 @@ public class UserBean {
             User user = UserBdd.getUser(pseudo, pwd);
             if (user != null) {
                 user.setProxyMessage(new UserMessageVirtualProxy(user.getIdUser()));
+                user.setProxyCategory(new UserCategoryVirtualProxy(user.getIdUser()));
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
                 user.setFriends(friend);
                 this.connected = true;
@@ -90,13 +103,11 @@ public class UserBean {
     }
 
     public void launchSearchUser(String search) throws SQLException, NoSuchAlgorithmException {
-        System.out.println("test 1");
-        if (this.searchedListUser == null) {
+         if (this.searchedListUser == null) {
             this.searchedListUser = new ArrayList();
         } else {
             this.searchedListUser.clear();
         }
-        System.out.println("test 2");
         this.searchedListUser = UserBdd.getUserBySearch(search);
     }
 
@@ -142,4 +153,13 @@ public class UserBean {
         this.searchedListUser = searchedListUser;
     }
 
+    public ArrayList<Category> getAllCategoriesExceptUser() {
+        return allCategoriesExceptUser;
+    }
+
+    public void setAllCategoriesExceptUser(ArrayList<Category> allCategoriesExceptUser) {
+        this.allCategoriesExceptUser = allCategoriesExceptUser;
+    }
+
+    
 }

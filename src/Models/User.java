@@ -1,7 +1,7 @@
 package Models;
 
+import Persistence.UserCategoryVirtualProxy;
 import Persistence.UserMessageVirtualProxy;
-import java.awt.List;
 import java.util.ArrayList;
 
 public class User {
@@ -12,7 +12,8 @@ public class User {
     protected int idUser;
     protected ArrayList<Friend> friends = new ArrayList();
     protected UserMessageVirtualProxy proxyMessage;
-
+    protected UserCategoryVirtualProxy proxyCategory;
+            
     public User() {
 
     }
@@ -37,6 +38,15 @@ public class User {
         this.pwd = pwd;
     }
 
+    public UserCategoryVirtualProxy getProxyCategory() {
+        return proxyCategory;
+    }
+
+    public void setProxyCategory(UserCategoryVirtualProxy proxyCategory) {
+        this.proxyCategory = proxyCategory;
+    }
+
+    
     public ArrayList<Friend> getFriends() {
         return friends;
     }

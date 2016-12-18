@@ -2,6 +2,7 @@ package Frame;
 
 import Bean.DiscussionGroupBean;
 import Bean.UserBean;
+import Models.Category;
 import Models.DiscussionGroup;
 import Models.Friend;
 import Models.Message;
@@ -57,7 +58,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JList privateMessage;
     private JList searchResult;
     private JList searchCategoryResult;
-
+            
     private JLabel rechercheUser;
     private JLabel rechercheCategoryUser;
     private JLabel pseudo;
@@ -142,6 +143,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         joinDiscussion = new JButton("Join Discussion");
         joinDiscussion.setBounds(700, 690, 200, 50);
         joinDiscussion.addActionListener(this);
+
     }
 
     public void displayList() {
@@ -322,7 +324,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
             fillResultUserSearch();
         }
         if (e.getActionCommand().equals("Search by Category")) {
-            
+
         }
         if (e.getActionCommand().equals("Manage")) {
             MyFrame.getInstance().changeFrame(new Manage());
