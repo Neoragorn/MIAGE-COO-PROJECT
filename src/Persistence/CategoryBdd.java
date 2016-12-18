@@ -52,4 +52,29 @@ public class CategoryBdd {
         }
         return categories;
     }
+
+    public static void insertAssoCategoryUser(User user, Category cat) throws SQLException {
+        try {
+            String req = "INSERT INTO AssoCategorieUser (idUser, idCategorie) VALUES (?, ?)";
+            PreparedStatement pss = conn.prepareStatement(req);
+            pss.setInt(1, user.getIdUser());
+            pss.setInt(2, cat.getIdCategory());
+            pss.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void deleteUserFromCategorie(User user, Category cat) throws SQLException {
+        try
+        {
+        String req = "DELETE FROM AssoCategorieUser where idUser = ? AND idCategorie = ?";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setInt(1, user.getIdUser());
+        pss.setInt(2, cat.getIdCategory());
+        pss.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

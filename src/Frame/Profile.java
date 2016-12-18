@@ -60,10 +60,12 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = categories.getSelectedIndex();
-
-            /*            for (Category cat : UserBean.getInstance().getAllCategoriesExceptUser()) {
-
-            }*/
+            Category cat = UserBean.getInstance().getAllCategoriesExceptUser().get(index);
+            try {
+                UserBean.getInstance().addCategory(cat);
+            } catch (Exception err) {
+                System.out.println(err);
+            }
             listCategory.remove(index);
             int size = listCategory.getSize();
             if (size == 0) { //Nobody's left, disable firing.
@@ -86,16 +88,11 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = categoriesUser.getSelectedIndex();
-            for (Friend f : UserBean.getInstance().getUser().getFriends()) {
-                String pseudoMail = f.getPseudo() + "//Mail : " + f.getMail();
-                if (pseudoMail.equals(listCategoryUser.elementAt(index))) {
-                    try {
-                        UserBean.getInstance().removeFriend(f.getPseudo(), f.getMail());
-                    } catch (Exception err) {
-                        System.out.println(err);
-                    }
-                    break;
-                }
+            Category cat = UserBean.getInstance().getUser().getProxyCategory().getCategories().get(index);
+            try {
+                UserBean.getInstance().removeCategory(cat);
+            } catch (Exception err) {
+                System.out.println(err);
             }
             listCategoryUser.remove(index);
             int size = listCategoryUser.getSize();
