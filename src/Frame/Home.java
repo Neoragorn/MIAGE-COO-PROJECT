@@ -5,13 +5,15 @@ import Bean.UserBean;
 import Models.DiscussionGroup;
 import Models.Friend;
 import Models.Message;
-import Models.MessageDiscussion;
+import Models.User;
 import Persistence.MessageDiscussionGroupVirtualProxy;
 import Persistence.UserDiscussionGroupVirtualProxy;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 
 import javax.swing.JButton;
@@ -19,10 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import javax.swing.JList;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -36,27 +38,48 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JButton manage;
     private JButton joinDiscussion;
     private JButton joinNewDiscussion;
+    private JButton searchUser;
+    private JButton searchCategory;
+
+    private JTextField TFRechercheUser;
+    private JTextField TFRechercheCategoryUser;
 
     private DefaultListModel listJoinedDiscussion;
     private DefaultListModel listNotJoinedDiscussion;
     private DefaultListModel listFriend;
     private DefaultListModel boiteReception;
+    private DefaultListModel listSearchResult;
+    private DefaultListModel listSearchCategoryResult;
 
     private JList joinedDiscussionGroup;
     private JList notJoinedDiscussionGroup;
     private JList friends;
     private JList privateMessage;
+    private JList searchResult;
+    private JList searchCategoryResult;
 
+    private JLabel rechercheUser;
+    private JLabel rechercheCategoryUser;
     private JLabel pseudo;
     private JLabel reception;
     private JLabel yourFriends;
     private JLabel joinNewDiscussionGroup;
     private JLabel yourDiscussionGroup;
 
+    private JScrollPane searchScroll = new JScrollPane();
+
     public void displayButtonAndInformation() {
         pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
         pseudo.setOpaque(true);
         pseudo.setBounds(20, 10, 150, 20);
+
+        rechercheUser = new JLabel("Search for a User");
+        rechercheUser.setOpaque(true);
+        rechercheUser.setBounds(1470, 20, 150, 20);
+
+        rechercheCategoryUser = new JLabel("Search for a user by category");
+        rechercheCategoryUser.setOpaque(true);
+        rechercheCategoryUser.setBounds(1470, 400, 250, 20);
 
         yourFriends = new JLabel("Your Friends");
         yourFriends.setOpaque(true);
@@ -74,9 +97,23 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         reception.setOpaque(true);
         reception.setBounds(70, 380, 200, 20);
 
+        TFRechercheUser = new JTextField();
+        TFRechercheUser.setBounds(1470, 40, 200, 50);
+
+        TFRechercheCategoryUser = new JTextField();
+        TFRechercheCategoryUser.setBounds(1470, 430, 200, 80);
+
         quitter = new JButton("Quit");
         quitter.setBounds(100, 700, 100, 50);
         quitter.addActionListener(this);
+
+        searchUser = new JButton("Search");
+        searchUser.setBounds(1470, 100, 130, 60);
+        searchUser.addActionListener(this);
+
+        searchCategory = new JButton("Search by Category");
+        searchCategory.setBounds(1470, 520, 180, 60);
+        searchCategory.addActionListener(this);
 
         sendMessage = new JButton("Send Message");
         sendMessage.setBounds(80, 310, 200, 50);
@@ -111,6 +148,8 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         listJoinedDiscussion = new DefaultListModel();
         listNotJoinedDiscussion = new DefaultListModel();
         boiteReception = new DefaultListModel();
+        listSearchResult = new DefaultListModel();
+        listSearchCategoryResult = new DefaultListModel();
 
         try {
             ArrayList<Message> privateMsg = UserBean.getInstance().getUser().getProxyMessage().initialize();
@@ -168,11 +207,23 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         privateMessage.setSelectedIndex(0);
         privateMessage.addListSelectionListener(this);
         privateMessage.setVisibleRowCount(5);
+
+        searchResult = new JList(listSearchResult);
+        searchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        searchResult.setSelectedIndex(1);
+        searchResult.addListSelectionListener(this);
+        searchResult.setVisibleRowCount(5);
+
+        searchCategoryResult = new JList(listSearchCategoryResult);
+        searchCategoryResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        searchCategoryResult.setSelectedIndex(1);
+        searchCategoryResult.addListSelectionListener(this);
+        searchCategoryResult.setVisibleRowCount(5);
     }
 
     public Home() {
         setLayout(null);
-        setPreferredSize(new Dimension(1600, 800));
+        setPreferredSize(new Dimension(1800, 1200));
 
         JPanel p1 = new JPanel();
         p1.setLayout(null);
@@ -209,6 +260,12 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         add(createDiscussion);
         add(joinDiscussion);
         add(joinNewDiscussionGroup);
+        add(TFRechercheUser);
+        add(rechercheUser);
+        add(searchUser);
+        add(TFRechercheCategoryUser);
+        add(searchCategory);
+        add(rechercheCategoryUser);
         if (UserBean.getInstance().getUser().getPseudo().equals("admin")) {
             add(manage);
         }
@@ -233,10 +290,39 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void fillResultUserSearch() {
+        String searching = TFRechercheUser.getText();
+        try {
+            UserBean.getInstance().launchSearchUser(searching);
+            if (UserBean.getInstance().getSearchedListUser() != null) {
+                this.listSearchResult.clear();
+                for (User u : UserBean.getInstance().getSearchedListUser()) {
+                    this.listSearchResult.addElement(u.getPseudo());
+                }
+                this.searchResult.setModel(listSearchResult);
+                this.searchResult.revalidate();
+                this.searchScroll.setViewportView(searchResult);
+                searchScroll.setBounds(1470, 180, 250, 200);
+                Border b = BorderFactory.createLineBorder(Color.BLACK);
+                b.paintBorder(this.searchScroll, this.getGraphics(), 1470, 180, 250, 200);
+                searchScroll.setBorder(b);
+                add(searchScroll);
+                this.revalidate();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
+    public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Quit")) {
             MyFrame.getInstance().quit();
+        }
+        if (e.getActionCommand().equals("Search")) {
+            fillResultUserSearch();
+        }
+        if (e.getActionCommand().equals("Search by Category")) {
+            
         }
         if (e.getActionCommand().equals("Manage")) {
             MyFrame.getInstance().changeFrame(new Manage());

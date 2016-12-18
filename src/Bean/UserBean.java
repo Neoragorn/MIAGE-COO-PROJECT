@@ -6,6 +6,7 @@ import Models.User;
 import Persistence.MessageBdd;
 import Persistence.UserBdd;
 import Persistence.UserMessageVirtualProxy;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class UserBean {
 
     private User user = null;
+    private ArrayList<User> searchedListUser = new ArrayList();
     private boolean connected = false;
 
     public UserBean() {
@@ -73,7 +75,7 @@ public class UserBean {
                 user.setProxyMessage(new UserMessageVirtualProxy(user.getIdUser()));
                 ArrayList<Friend> friend = UserBdd.getFriends(user);
                 user.setFriends(friend);
-                 this.connected = true;
+                this.connected = true;
                 this.user = user;
                 System.out.println("You are connected!");
                 return true;
@@ -85,6 +87,17 @@ public class UserBean {
             System.out.println(err);
         }
         return false;
+    }
+
+    public void launchSearchUser(String search) throws SQLException, NoSuchAlgorithmException {
+        System.out.println("test 1");
+        if (this.searchedListUser == null) {
+            this.searchedListUser = new ArrayList();
+        } else {
+            this.searchedListUser.clear();
+        }
+        System.out.println("test 2");
+        this.searchedListUser = UserBdd.getUserBySearch(search);
     }
 
     public void updateUserFriendInfo(User user) throws SQLException {
@@ -120,4 +133,13 @@ public class UserBean {
             System.out.println(err);
         }
     }
+
+    public ArrayList<User> getSearchedListUser() {
+        return searchedListUser;
+    }
+
+    public void setSearchedListUser(ArrayList<User> searchedListUser) {
+        this.searchedListUser = searchedListUser;
+    }
+
 }

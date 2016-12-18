@@ -90,7 +90,7 @@ public class UserBdd {
         return privateMessage;
     }
 
-        public static ArrayList<Message> getPrivateMessageById(int id) throws SQLException {
+    public static ArrayList<Message> getPrivateMessageById(int id) throws SQLException {
         ArrayList<Message> privateMessage = new ArrayList();
         String req = "select userEnvoi.pseudo, userRecoi.pseudo, pm.message, date, pm.idAuteur FROM PrivateMessage pm "
                 + "join User userEnvoi on pm.idAuteur = userEnvoi.idUser "
@@ -108,7 +108,7 @@ public class UserBdd {
         return privateMessage;
     }
 
-        public static Friend findFriendById(int id) throws SQLException {
+    public static Friend findFriendById(int id) throws SQLException {
         try {
             String req = "SELECT idUser, pseudo, mail FROM User WHERE iduser = ?";
             PreparedStatement pss = conn.prepareStatement(req);
@@ -132,6 +132,28 @@ public class UserBdd {
             User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
             return user;
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static ArrayList<User> getUserBySearch(String pseudo) throws SQLException, NoSuchAlgorithmException {
+        try {
+            if (pseudo.isEmpty()) {
+                return null;
+            }
+            String req = "SELECT idUser, pseudo, mail FROM User WHERE pseudo like ?";
+            ArrayList<User> userList = new ArrayList();
+            PreparedStatement pss = conn.prepareStatement(req);
+
+            pss.setString(1, pseudo + '%');
+            ResultSet rs = pss.executeQuery();
+            while (rs.next()) {
+                User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+                userList.add(u);
+            }
+            return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
             return null;
         }
     }
