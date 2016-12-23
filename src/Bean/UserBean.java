@@ -84,11 +84,10 @@ public class UserBean {
         CategoryBdd.insertAssoCategoryUser(user, cat);
     }
 
-    public void removeCategory(Category cat) throws SQLException
-    {
+    public void removeCategory(Category cat) throws SQLException {
         CategoryBdd.deleteUserFromCategorie(user, cat);
     }
-    
+
     public boolean connectUser(String pseudo, String pwd) {
         try {
             User user = UserBdd.getUser(pseudo, pwd);
@@ -118,6 +117,18 @@ public class UserBean {
             this.searchedListUser.clear();
         }
         this.searchedListUser = UserBdd.getUserBySearch(search);
+    }
+
+    public void launchSearchUserByCategory(String search) throws SQLException, NoSuchAlgorithmException {
+        if (this.searchedListUser == null) {
+            this.searchedListUser = new ArrayList();
+        } else {
+            this.searchedListUser.clear();
+        }
+        Category cat = CategoryBdd.getCategoryByName(search);
+        if (cat != null) {
+            this.searchedListUser = UserBdd.getUserBySearchCategory(cat);
+        }
     }
 
     public void updateUserFriendInfo(User user) throws SQLException {

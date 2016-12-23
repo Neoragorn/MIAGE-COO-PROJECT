@@ -58,7 +58,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JList privateMessage;
     private JList searchResult;
     private JList searchCategoryResult;
-            
+
     private JLabel rechercheUser;
     private JLabel rechercheCategoryUser;
     private JLabel pseudo;
@@ -68,6 +68,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
     private JLabel yourDiscussionGroup;
 
     private JScrollPane searchScroll = new JScrollPane();
+    private JScrollPane searchScrollCategory = new JScrollPane();
 
     public void displayButtonAndInformation() {
         pseudo = new JLabel("Pseudo : " + UserBean.getInstance().getUser().getPseudo());
@@ -292,6 +293,30 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
         }
     }
 
+    public void fillResultCategorySearch() {
+        String searching = TFRechercheCategoryUser.getText();
+        try {
+            UserBean.getInstance().launchSearchUserByCategory(searching);
+            if (UserBean.getInstance().getSearchedListUser() != null) {
+                this.listSearchCategoryResult.clear();
+                for (User u : UserBean.getInstance().getSearchedListUser()) {
+                    this.listSearchCategoryResult.addElement(u.getPseudo());
+                }
+                this.searchCategoryResult.setModel(listSearchCategoryResult);
+                this.searchCategoryResult.revalidate();
+                this.searchScrollCategory.setViewportView(searchCategoryResult);
+                searchScrollCategory.setBounds(1470, 600, 250, 200);
+                Border b = BorderFactory.createLineBorder(Color.BLACK);
+                b.paintBorder(this.searchScrollCategory, this.getGraphics(), 1470, 180, 250, 200);
+                searchScrollCategory.setBorder(b);
+                add(searchScrollCategory);
+                this.revalidate();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void fillResultUserSearch() {
         String searching = TFRechercheUser.getText();
         try {
@@ -324,7 +349,7 @@ public class Home extends JPanel implements ActionListener, ListSelectionListene
             fillResultUserSearch();
         }
         if (e.getActionCommand().equals("Search by Category")) {
-
+            fillResultCategorySearch();
         }
         if (e.getActionCommand().equals("Manage")) {
             MyFrame.getInstance().changeFrame(new Manage());

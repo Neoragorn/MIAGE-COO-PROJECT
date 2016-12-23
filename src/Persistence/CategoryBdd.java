@@ -7,12 +7,12 @@ package Persistence;
 
 import Models.Category;
 import Models.User;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import static jdk.nashorn.internal.runtime.Debug.id;
 
 /**
  *
@@ -75,6 +75,25 @@ public class CategoryBdd {
         pss.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
+        }
+    }
+    
+        public static Category getCategoryByName(String category) throws SQLException, NoSuchAlgorithmException {
+        try {
+            if (category.isEmpty()) {
+                return null;
+            }
+            String req = "SELECT * FROM CategorieUser WHERE nom like ?";
+            PreparedStatement pss = conn.prepareStatement(req);
+
+            pss.setString(1, category);
+            ResultSet rs = pss.executeQuery();
+            rs.next();
+            Category cat = new Category(rs.getInt(1), rs.getString(2));
+            return cat;            
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
         }
     }
 }

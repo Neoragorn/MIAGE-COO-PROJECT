@@ -6,6 +6,7 @@
 package Persistence;
 
 import Bean.UserBean;
+import Models.Category;
 import Models.Friend;
 import Models.Message;
 import Models.User;
@@ -152,6 +153,29 @@ public class UserBdd {
                 userList.add(u);
             }
             return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public static ArrayList<User> getUserBySearchCategory(Category cat) throws SQLException, NoSuchAlgorithmException {
+        try {
+            ArrayList<User> userList = new ArrayList();
+            String req = "SELECT u.idUser, u.pseudo, u.mail FROM User u "
+                    + "JOIN  AssoCategorieUser assoCat on assoCat.idUser = u.idUser "
+                    + "JOIN CategorieUser cat on cat.idCategorie = assoCat.idCategorie "
+                    + "WHERE cat.idCategorie = ?";
+            PreparedStatement pss = conn.prepareStatement(req);
+
+            pss.setInt(1, cat.getIdCategory());
+            ResultSet rs = pss.executeQuery();  
+            while (rs.next())
+            {
+                User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+                userList.add(user);
+            }
+            return userList;            
         } catch (SQLException e) {
             System.out.println(e);
             return null;
