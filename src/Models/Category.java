@@ -11,7 +11,7 @@ package Models;
  */
 public class Category {
     private int idCategory;
-    private String nom;
+    private String nom;    
 
     public Category(int idCategory, String nom) {
         this.idCategory = idCategory;

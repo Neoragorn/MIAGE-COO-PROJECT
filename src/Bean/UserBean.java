@@ -52,6 +52,14 @@ public class UserBean {
         }
     }
 
+    public void modifyMail(String mail) {
+        try {
+            UserBdd.changeMail(this.user, mail);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void getAllNotUserCategories() {
         try {
             this.allCategoriesExceptUser = CategoryBdd.getAllCategoryExceptUser(user);

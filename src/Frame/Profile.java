@@ -41,6 +41,7 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
     private JList categories;
     private JList categoriesUser;
 
+    private JButton modifyMail;
     private JButton returnHome;
     private JButton addFriend;
     private JButton removeFriend;
@@ -181,8 +182,8 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         setLayout(null);
         setPreferredSize(new Dimension(1800, 800));
 
-        TFPseudo = new JTextField("Pseudo");
-        TFMail = new JTextField("Mail");
+        TFPseudo = new JTextField(UserBean.getInstance().getUser().getPseudo());
+        TFMail = new JTextField(UserBean.getInstance().getUser().getMail());
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);
@@ -190,6 +191,10 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         returnHome = new JButton("Return");
         returnHome.setBounds(30, 650, 100, 50);
         returnHome.addActionListener(this);
+
+        modifyMail = new JButton("Modify Mail");
+        modifyMail.setBounds(250, 70, 120, 50);
+        modifyMail.addActionListener(this);
 
         addFriend = new JButton("Add Friend");
         addFriend.setBounds(50, 140, 200, 50);
@@ -295,6 +300,7 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
         p1.add(TFMail);
         p1.add(TFPseudo, BorderLayout.PAGE_END);
         p1.setBounds(0, 0, 1800, 800);
+        p1.add(modifyMail);
         add(p1);
     }
 
@@ -326,7 +332,10 @@ public class Profile extends JPanel implements ActionListener, ListSelectionList
             } catch (Exception err) {
                 System.out.println(err);
             }
-
+        }
+        if (e.getActionCommand().equals("Modify Mail")) {
+            String newMail = TFMail.getText();
+            UserBean.getInstance().modifyMail(newMail);
         }
     }
 }

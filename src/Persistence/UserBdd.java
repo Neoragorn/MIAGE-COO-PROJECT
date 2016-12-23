@@ -45,6 +45,14 @@ public class UserBdd {
         pss.executeUpdate();
     }
 
+    public static void changeMail(User user, String mail) throws SQLException {
+        String req = "UPDATE User SET mail = ? WHERE idUser = ?";
+        PreparedStatement pss = conn.prepareStatement(req);
+        pss.setString(1, mail);
+        pss.setInt(2, user.getIdUser());
+        pss.executeUpdate();
+    }
+
     public static void deleteUser(User user) throws SQLException {
         String req = "DELETE FROM User WHERE idUser = ? ";
         PreparedStatement pss = conn.prepareStatement(req);
@@ -169,13 +177,12 @@ public class UserBdd {
             PreparedStatement pss = conn.prepareStatement(req);
 
             pss.setInt(1, cat.getIdCategory());
-            ResultSet rs = pss.executeQuery();  
-            while (rs.next())
-            {
+            ResultSet rs = pss.executeQuery();
+            while (rs.next()) {
                 User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
                 userList.add(user);
             }
-            return userList;            
+            return userList;
         } catch (SQLException e) {
             System.out.println(e);
             return null;
