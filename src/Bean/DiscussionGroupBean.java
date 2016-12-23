@@ -32,7 +32,7 @@ public class DiscussionGroupBean {
         }
         return inst;
     }
-
+    
     public void checkUserModerator() throws SQLException {
         if (this.discussion.getIdCreator() == UserBean.getInstance().getUser().getIdUser()) {
             this.moderator = true;

@@ -12,7 +12,7 @@ import Models.User;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -32,50 +32,84 @@ import javax.swing.text.Document;
  * @author sofian
  */
 public class Discussion extends JPanel implements ActionListener, ListSelectionListener {
-    
+
     private DefaultListModel listMembers;
-    
+
     private JEditorPane discussionField;
     private JList members;
+
     private JButton returnHome;
     private JButton AddMessage;
     private JButton leaveDiscussion;
-    
+    private JButton supressUser;
+
     private JTextField TFMessage;
-    
+
     private JLabel discussionTitle;
     private JLabel AddMessageLabel;
-    
+
+    class RemoveUserDiscussionListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            //This method can be called only if
+            //there's a valid selection
+            //so go ahead and remove whatever's selected.
+            int index = members.getSelectedIndex();
+            ArrayList<User> listUser = DiscussionGroupBean.getInstance().getDiscussion().getMembers().getUsers();
+            try {
+                DiscussionGroupBean.getInstance().destroyUserFromDiscussion(listUser.get(index));
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+            listMembers.remove(index);
+            int size = listMembers.getSize();
+            if (size == 0) { //Nobody's left, disable firing.
+                supressUser.setEnabled(false);
+            } else { //Select an index.
+                if (index == listMembers.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+                members.setSelectedIndex(index);
+                members.ensureIndexIsVisible(index);
+            }
+        }
+    }
+
     public Discussion() {
         setLayout(null);
         setPreferredSize(new Dimension(1600, 800));
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setOpaque(false);
-        
+
         discussionTitle = new JLabel(DiscussionGroupBean.getInstance().getDiscussion().getTitle());
         discussionTitle.setOpaque(true);
         discussionTitle.setBounds(40, 10, 300, 20);
-        
+
         AddMessageLabel = new JLabel("Ajouter un message");
         AddMessageLabel.setOpaque(true);
         AddMessageLabel.setBounds(190, 680, 300, 20);
-        
+
         TFMessage = new JTextField();
         TFMessage.setBounds(190, 700, 400, 60);
-        
+
         returnHome = new JButton("Return");
         returnHome.setBounds(30, 700, 100, 50);
         returnHome.addActionListener(this);
-        
+
+        supressUser = new JButton("Kick User");
+        supressUser.setBounds(840, 50, 150, 50);
+        supressUser.addActionListener(new RemoveUserDiscussionListener());
+
         leaveDiscussion = new JButton("Leave Discussion");
         leaveDiscussion.setBounds(1200, 700, 200, 50);
         leaveDiscussion.addActionListener(this);
-        
+
         AddMessage = new JButton("Add Message");
         AddMessage.setBounds(600, 700, 200, 50);
         AddMessage.addActionListener(this);
-        
+
         listMembers = new DefaultListModel();
         try {
             ArrayList<User> users = DiscussionGroupBean.getInstance().getDiscussion().getMembers().initialize();
@@ -89,30 +123,30 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         members = new JList(listMembers);
         members.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         members.setSelectedIndex(0);
         members.addListSelectionListener(this);
         members.setVisibleRowCount(5);
-        
+
         discussionField = new JEditorPane();
         discussionField.setBounds(30, 50, 800, 600);
-        
+
         try {
             Document doc = discussionField.getDocument();
             ArrayList<MessageDiscussion> msgList = DiscussionGroupBean.getInstance().getDiscussion().getMessagesProxy().getMessages();
             for (MessageDiscussion msg : msgList) {
                 doc.insertString(doc.getLength(), "[" + msg.getTime() + "] " + msg.getAuteur() + ": " + msg.getMessage() + "\n", null);
-                
+
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         JScrollPane scrollMembers = new JScrollPane(members);
         scrollMembers.setBounds(1000, 50, 500, 600);
-        
+
         p1.add(leaveDiscussion);
         p1.add(AddMessageLabel);
         p1.add(AddMessage);
@@ -122,15 +156,18 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
         p1.add(scrollMembers);
         p1.add(discussionTitle);
         p1.add(TFMessage);
+        if (DiscussionGroupBean.getInstance().isModerator()) {
+            p1.add(supressUser);
+        }
         add(p1);
     }
-    
+
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
-            
+
         }
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Return")) {
             try {
@@ -146,7 +183,7 @@ public class Discussion extends JPanel implements ActionListener, ListSelectionL
             } catch (Exception err) {
                 System.out.println(err);
             }
-            
+
         }
         if (e.getActionCommand().equals("Add Message")) {
             try {

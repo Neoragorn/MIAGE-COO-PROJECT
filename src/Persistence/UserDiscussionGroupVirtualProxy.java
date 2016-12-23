@@ -39,6 +39,14 @@ public class UserDiscussionGroupVirtualProxy extends ArrayList<DiscussionGroup> 
     public void setId(int id) {
         this.id = id;
     }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
     
     
 }
